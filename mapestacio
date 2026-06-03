@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Campus Map — Estácio JNE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --or:#E8410A;--or-l:#FDF1EC;--or-m:#F4845F;--or-d:#C03408;
+  --nv:#1A2744;--nv-l:#EEF1F8;--nv-m:#3D5080;--nv-ll:#F5F7FC;
+  --gn:#2D7D4F;--gn-l:#EAF4EE;--gn-m:#5BAB7C;
+  --pu:#5A3DB5;--pu-l:#F0EEF9;--pu-m:#8B74D4;
+  --am:#8A5A00;--am-l:#FFF8EB;--am-m:#D4920A;
+  --rd:#A32D2D;--rd-l:#FFF0F0;
+  --gy:#6B7280;--gy-l:#F3F4F6;--gy-m:#9CA3AF;
+  --bg:#F5F4F0;--wh:#FFFFFF;--bdr:#E4E2DC;
+  --sh:0 2px 12px rgba(0,0,0,.08);--sh-lg:0 8px 32px rgba(0,0,0,.12);
+  --r:12px;--r-sm:8px;--r-xs:6px;
+  --sidebar:300px;--top-h:60px;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:'DM Sans',sans-serif}
+@media(max-width:768px){
+  :root{--sidebar:100%;--top-h:56px}
+  html,body{overflow:auto}
+}
+
+/* ── TOP BAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--top-h);background:var(--nv);display:flex;align-items:center;padding:0 16px;z-index:100;gap:12px}
+.topbar-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.topbar-emblem{width:34px;height:34px;background:var(--or);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff;flex-shrink:0}
+.topbar-title{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:#fff;line-height:1.2}
+.topbar-sub{font-size:10px;color:rgba(255,255,255,.5);font-weight:300}
+.topbar-search{flex:1;max-width:280px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:0.5px solid rgba(255,255,255,.15);border-radius:var(--r-sm);padding:7px 11px;margin-left:auto}
+.topbar-search input{border:none;background:transparent;font-size:12px;color:#fff;outline:none;width:100%;font-family:'DM Sans',sans-serif}
+.topbar-search input::placeholder{color:rgba(255,255,255,.4)}
+.topbar-search i{color:rgba(255,255,255,.5);font-size:14px;flex-shrink:0}
+.topbar-menu-btn{display:none;width:36px;height:36px;border:0.5px solid rgba(255,255,255,.2);border-radius:var(--r-sm);background:transparent;cursor:pointer;color:#fff;font-size:18px;align-items:center;justify-content:center;flex-shrink:0}
+@media(max-width:768px){.topbar-menu-btn{display:flex}.topbar-search{max-width:unset;flex:1}}
+
+/* ── LAYOUT ── */
+.layout{display:flex;height:100vh;padding-top:var(--top-h)}
+@media(max-width:768px){.layout{flex-direction:column;height:auto;overflow:visible}}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar);min-width:var(--sidebar);background:var(--wh);border-right:0.5px solid var(--bdr);display:flex;flex-direction:column;overflow:hidden;height:calc(100vh - var(--top-h));position:sticky;top:var(--top-h)}
+@media(max-width:768px){
+  .sidebar{position:fixed;top:var(--top-h);left:0;right:0;bottom:0;width:100%;height:calc(100dvh - var(--top-h));z-index:90;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);border-right:none;box-shadow:var(--sh-lg)}
+  .sidebar.mobile-open{transform:translateX(0)}
+}
+
+.filters-bar{padding:12px 14px;border-bottom:0.5px solid var(--bdr);background:var(--wh)}
+.filters-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.9px;color:var(--gy);margin-bottom:7px}
+.filters-scroll{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.filters-scroll::-webkit-scrollbar{display:none}
+.chip{font-size:10px;padding:5px 9px;border-radius:20px;border:0.5px solid var(--bdr);background:var(--wh);color:var(--gy);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .15s;white-space:nowrap;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.chip i{font-size:11px}
+.chip.on-navy{background:var(--nv);color:#fff;border-color:var(--nv)}
+.chip.on-orange{background:var(--or);color:#fff;border-color:var(--or)}
+
+.blocks-scroll{flex:1;overflow-y:auto;padding:8px 10px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent}
+.blocks-scroll::-webkit-scrollbar{width:4px}
+.blocks-scroll::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
+
+.blk-row{display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:var(--r-sm);cursor:pointer;transition:all .15s;border:0.5px solid transparent;margin-bottom:2px}
+.blk-row:hover{background:var(--bg);border-color:var(--bdr)}
+.blk-row.sel{background:var(--or-l);border-color:var(--or-m)}
+.blk-badge{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:#fff;flex-shrink:0}
+.blk-text{flex:1;min-width:0}
+.blk-name{font-size:12px;font-weight:500;color:var(--nv)}
+.blk-ct{font-size:10px;color:var(--gy)}
+.blk-arr{font-size:12px;color:var(--gy-m)}
+
+/* ── MAP ── */
+.map-wrap{flex:1;position:relative;overflow:hidden;background:#B8CE85}
+@media(max-width:768px){.map-wrap{height:55vh;min-height:320px;overflow:hidden}}
+.map-svg-wrap{width:100%;height:100%;position:absolute;top:0;left:0}
+.map-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.map-overlay>*{pointer-events:all}
+
+/* block buttons on map */
+.mb{position:absolute;display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform .2s,filter .2s;z-index:5;transform-origin:center bottom}
+.mb:hover{transform:translateY(-3px) scale(1.04)}
+.mb.sel{transform:translateY(-3px) scale(1.05)}
+.mb-box{border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;color:#fff;box-shadow:0 3px 10px rgba(0,0,0,.2);transition:box-shadow .2s}
+.mb.sel .mb-box{box-shadow:0 0 0 3px #fff,0 4px 16px rgba(0,0,0,.3)}
+.mb.dim .mb-box{opacity:.3}
+.mb-lbl{font-size:8px;font-weight:500;color:var(--nv);background:rgba(255,255,255,.88);padding:2px 5px;border-radius:4px;margin-top:3px;white-space:nowrap;text-align:center;max-width:72px;line-height:1.3;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+
+.map-pin{position:absolute;display:flex;flex-direction:column;align-items:center;cursor:pointer;z-index:6;transition:transform .2s}
+.map-pin:hover{transform:scale(1.1)}
+.pin-circle{width:20px;height:20px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.pin-lbl{font-size:8px;color:var(--nv);background:rgba(255,255,255,.9);padding:2px 5px;border-radius:4px;margin-top:2px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+
+.map-legend{position:absolute;bottom:12px;left:12px;background:rgba(255,255,255,.92);border:0.5px solid var(--bdr);border-radius:var(--r-sm);padding:9px 11px;z-index:8;backdrop-filter:blur(4px)}
+@media(max-width:768px){.map-legend{display:none}}
+.leg-t{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--gy);margin-bottom:7px}
+.leg-i{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--nv);margin-bottom:4px}
+.leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+
+.zoom-btns{position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;z-index:8}
+.zoom-btn{width:30px;height:30px;background:rgba(255,255,255,.92);border:0.5px solid var(--bdr);border-radius:var(--r-xs);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--nv);font-weight:500;transition:background .15s;backdrop-filter:blur(4px)}
+.zoom-btn:hover{background:#fff}
+
+/* ── DETAIL PANEL ── */
+.detail{position:absolute;top:0;right:0;bottom:0;width:290px;background:var(--wh);border-left:0.5px solid var(--bdr);transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);overflow-y:auto;z-index:30;display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent}
+.detail.open{transform:translateX(0)}
+@media(max-width:768px){
+  .detail{position:fixed;left:0;right:0;bottom:0;top:auto;width:100%;height:72vh;border-left:none;border-top:0.5px solid var(--bdr);border-radius:20px 20px 0 0;transform:translateY(100%);box-shadow:var(--sh-lg)}
+  .detail.open{transform:translateY(0)}
+}
+.det-drag{display:none;width:36px;height:4px;background:var(--bdr);border-radius:2px;margin:10px auto 0;flex-shrink:0}
+@media(max-width:768px){.det-drag{display:block}}
+
+.det-hd{padding:14px 16px 12px;border-bottom:0.5px solid var(--bdr);position:sticky;top:0;background:var(--wh);z-index:2}
+.det-close{position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:50%;border:0.5px solid var(--bdr);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--gy);transition:background .15s}
+.det-close:hover{background:var(--bdr)}
+.det-emblem{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#fff;margin-bottom:8px}
+.det-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:var(--nv)}
+.det-sub{font-size:11px;color:var(--gy);margin-top:1px}
+
+/* mini map of block */
+.mini-map{margin:12px 16px;border-radius:var(--r);border:0.5px solid var(--bdr);overflow:hidden;background:#E8F0D0}
+.mini-map svg{width:100%;display:block}
+
+.det-body{padding:8px 14px 20px;flex:1}
+.sec-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.9px;color:var(--gy);margin:10px 0 6px;padding-top:4px}
+.room-card{background:var(--bg);border-radius:var(--r-sm);padding:9px 11px;margin-bottom:5px;cursor:pointer;border:0.5px solid transparent;transition:all .18s}
+.room-card:hover{background:var(--or-l);border-color:var(--or-m)}
+.room-card.open{background:var(--or-l);border-color:var(--or)}
+.rc-top{display:flex;align-items:center;gap:8px}
+.rc-icon{font-size:14px;flex-shrink:0;transition:color .15s}
+.rc-name{font-size:12px;font-weight:500;color:var(--nv);flex:1;line-height:1.3}
+.rc-arr{font-size:11px;color:var(--gy-m);transition:transform .2s}
+.room-card.open .rc-arr{transform:rotate(90deg)}
+.rc-tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}
+.tag{font-size:9px;padding:2px 7px;border-radius:10px;border:0.5px solid;display:inline-block}
+
+.rc-detail{display:none;margin-top:8px;background:var(--wh);border:0.5px solid var(--bdr);border-radius:var(--r-sm);overflow:hidden}
+.room-card.open .rc-detail{display:block}
+.rcd-row{display:flex;align-items:flex-start;gap:9px;padding:7px 10px;border-bottom:0.5px solid var(--bdr);font-size:11px}
+.rcd-row:last-child{border-bottom:none}
+.rcd-row i{font-size:13px;color:var(--gy);flex-shrink:0;margin-top:1px}
+.rcd-lbl{color:var(--gy);min-width:62px;flex-shrink:0}
+.rcd-val{color:var(--nv)}
+
+.no-res{padding:16px;text-align:center;font-size:12px;color:var(--gy);font-style:italic}
+
+/* tag colors */
+.tag-sala{background:#EEF1F8;color:#1A2744;border-color:#C5CDE3}
+.tag-lab{background:#FDF0EB;color:#C1370A;border-color:#F4845F}
+.tag-admin{background:#EAF4EE;color:#1A5C36;border-color:#7DC5A0}
+.tag-wc{background:#F0EEF9;color:#5A3DB5;border-color:#B9ABE8}
+.tag-social{background:#FFF8EB;color:#8A5A00;border-color:#F0C06A}
+.tag-saude{background:#FFF0F0;color:#A32D2D;border-color:#F09595}
+.tag-biblioteca{background:#E6F1FB;color:#185FA5;border-color:#85B7EB}
+.tag-informatica{background:#F0EEF9;color:#5A3DB5;border-color:#B9ABE8}
+
+/* overlay backdrop mobile */
+.backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:88}
+@media(max-width:768px){.backdrop.show{display:block}}
+
+/* pill count badge on topbar */
+.result-badge{background:var(--or);color:#fff;font-size:9px;font-weight:600;padding:2px 6px;border-radius:10px;margin-left:4px;display:none}
+.result-badge.show{display:inline-block}
+
+/* pulse anim for selected on map */
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(232,65,10,.4)}70%{box-shadow:0 0 0 8px rgba(232,65,10,0)}100%{box-shadow:0 0 0 0 rgba(232,65,10,0)}}
+.mb.sel .mb-box{animation:pulse 1.5s ease-out}
+
+/* map pan/zoom container */
+.map-inner{position:absolute;inset:0;transform-origin:0 0;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <a class="topbar-logo" href="#">
+    <div class="topbar-emblem">E</div>
+    <div class="topbar-title">Estácio JNE<div class="topbar-sub">Mapa do Campus</div></div>
+  </a>
+  <div class="topbar-search">
+    <i class="ti ti-search" aria-hidden="true"></i>
+    <input type="text" id="searchInput" placeholder="Buscar sala, lab, banheiro…">
+    <span class="result-badge" id="resultBadge"></span>
+  </div>
+  <button class="topbar-menu-btn" id="menuBtn" aria-label="Menu">
+    <i class="ti ti-layout-sidebar-left-expand"></i>
+  </button>
+</header>
+
+<div class="backdrop" id="backdrop"></div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="filters-bar">
+      <div class="filters-label">Filtrar por tipo</div>
+      <div class="filters-scroll" id="filtersBar">
+        <div class="chip on-navy" data-f="all"><i class="ti ti-layout-grid"></i>Todos</div>
+        <div class="chip" data-f="sala"><i class="ti ti-school"></i>Salas</div>
+        <div class="chip" data-f="lab"><i class="ti ti-microscope"></i>Labs</div>
+        <div class="chip" data-f="informatica"><i class="ti ti-device-laptop"></i>Informática</div>
+        <div class="chip" data-f="admin"><i class="ti ti-briefcase"></i>Administrativo</div>
+        <div class="chip" data-f="wc"><i class="ti ti-accessible"></i>Banheiros</div>
+        <div class="chip" data-f="biblioteca"><i class="ti ti-books"></i>Biblioteca</div>
+        <div class="chip" data-f="saude"><i class="ti ti-first-aid-kit"></i>Saúde</div>
+        <div class="chip" data-f="social"><i class="ti ti-coffee"></i>Social</div>
+      </div>
+    </div>
+    <div class="blocks-scroll" id="blocksList"></div>
+  </aside>
+
+  <!-- MAP AREA -->
+  <main class="map-wrap" id="mapWrap">
+    <div class="map-inner" id="mapInner">
+      <svg class="map-svg-wrap" viewBox="0 0 700 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <!-- ground -->
+        <rect width="700" height="600" fill="#A8C070"/>
+        <!-- campus boundary -->
+        <polygon points="75,570 610,570 650,490 640,60 460,20 70,40 40,200 50,510" fill="#C5DC98" opacity=".7"/>
+        <!-- roads -->
+        <rect x="0" y="550" width="700" height="50" fill="#7A9050" opacity=".7"/>
+        <text x="100" y="572" font-size="10" fill="#4A6020" font-family="DM Sans,sans-serif">Av. Ten. Raimundo Rocha</text>
+        <rect x="0" y="0" width="28" height="600" fill="#7A9050" opacity=".5"/>
+        <rect x="0" y="8" width="700" height="26" fill="#7A9050" opacity=".5"/>
+        <text x="200" y="22" font-size="9" fill="#3A4A18" font-family="DM Sans,sans-serif">R. Danilo Landim Leite</text>
+        <text x="8" y="300" font-size="9" fill="#3A4A18" font-family="DM Sans,sans-serif" transform="rotate(-90,14,300)">R. José Agostinho de Oliveira</text>
+        <!-- internal path / corridor -->
+        <path d="M260,540 L260,420 L310,360 L310,45" stroke="#D0E4A0" stroke-width="18" fill="none" stroke-linecap="round"/>
+        <path d="M310,250 L580,250" stroke="#D0E4A0" stroke-width="14" fill="none" stroke-linecap="round"/>
+        <path d="M310,360 L580,360" stroke="#D0E4A0" stroke-width="14" fill="none" stroke-linecap="round"/>
+        <path d="M310,450 L570,450" stroke="#D0E4A0" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <!-- parking area -->
+        <rect x="78" y="390" width="155" height="125" rx="4" fill="#B0C878" opacity=".5"/>
+        <!-- parking spots rows -->
+        <g fill="#8AAA50" opacity=".6">
+          <rect x="90" y="402" width="12" height="20" rx="2"/><rect x="106" y="402" width="12" height="20" rx="2"/><rect x="122" y="402" width="12" height="20" rx="2"/><rect x="138" y="402" width="12" height="20" rx="2"/><rect x="154" y="402" width="12" height="20" rx="2"/><rect x="170" y="402" width="12" height="20" rx="2"/><rect x="186" y="402" width="12" height="20" rx="2"/>
+          <rect x="90" y="427" width="12" height="20" rx="2"/><rect x="106" y="427" width="12" height="20" rx="2"/><rect x="122" y="427" width="12" height="20" rx="2"/><rect x="138" y="427" width="12" height="20" rx="2"/><rect x="154" y="427" width="12" height="20" rx="2"/><rect x="170" y="427" width="12" height="20" rx="2"/><rect x="186" y="427" width="12" height="20" rx="2"/>
+          <rect x="90" y="452" width="12" height="20" rx="2"/><rect x="106" y="452" width="12" height="20" rx="2"/><rect x="122" y="452" width="12" height="20" rx="2"/><rect x="138" y="452" width="12" height="20" rx="2"/><rect x="154" y="452" width="12" height="20" rx="2"/><rect x="170" y="452" width="12" height="20" rx="2"/><rect x="186" y="452" width="12" height="20" rx="2"/>
+          <rect x="90" y="478" width="12" height="20" rx="2"/><rect x="106" y="478" width="12" height="20" rx="2"/><rect x="122" y="478" width="12" height="20" rx="2"/><rect x="138" y="478" width="12" height="20" rx="2"/><rect x="154" y="478" width="12" height="20" rx="2"/><rect x="170" y="478" width="12" height="20" rx="2"/><rect x="186" y="478" width="12" height="20" rx="2"/>
+        </g>
+        <text x="120" y="508" font-size="9" fill="#4A6020" font-family="DM Sans,sans-serif" font-weight="600">Estacionamento</text>
+        <!-- trees scattered -->
+        <g fill="#5A8A30" opacity=".55">
+          <circle cx="60" cy="100" r="18"/><circle cx="90" cy="80" r="14"/><circle cx="50" cy="140" r="12"/><circle cx="620" cy="90" r="20"/><circle cx="645" cy="130" r="14"/><circle cx="640" cy="170" r="16"/><circle cx="550" cy="50" r="18"/><circle cx="590" cy="35" r="14"/><circle cx="480" cy="30" r="12"/><circle cx="640" cy="280" r="16"/><circle cx="650" cy="350" r="14"/><circle cx="600" cy="500" r="18"/><circle cx="50" cy="310" r="14"/><circle cx="55" cy="370" r="12"/><circle cx="640" cy="430" r="16"/>
+        </g>
+        <!-- leisure/walkway circle -->
+        <circle cx="310" cy="460" r="26" fill="#90B860" opacity=".6"/>
+        <circle cx="310" cy="460" r="16" fill="#70A040" opacity=".5"/>
+        <text x="310" y="464" font-size="7" fill="#2A5010" font-family="DM Sans,sans-serif" text-anchor="middle">Lazer</text>
+      </svg>
+
+      <!-- Block overlays rendered by JS -->
+      <div id="mapBlocks" style="position:absolute;inset:0;pointer-events:none"></div>
+    </div>
+
+    <!-- Legend -->
+    <div class="map-legend">
+      <div class="leg-t">Legenda</div>
+      <div class="leg-i"><div class="leg-dot" style="background:#1A2744"></div>Administrativo</div>
+      <div class="leg-i"><div class="leg-dot" style="background:#E8410A"></div>Saúde / Clínicas</div>
+      <div class="leg-i"><div class="leg-dot" style="background:#2D7D4F"></div>Laboratórios</div>
+      <div class="leg-i"><div class="leg-dot" style="background:#5A3DB5"></div>Salas de Aula</div>
+      <div class="leg-i"><div class="leg-dot" style="background:#8A5A00"></div>Social / Lazer</div>
+      <div class="leg-i"><div class="leg-dot" style="background:#888780"></div>Em cadastramento</div>
+    </div>
+
+    <!-- Zoom -->
+    <div class="zoom-btns">
+      <button class="zoom-btn" id="zoomIn" title="Zoom +">+</button>
+      <button class="zoom-btn" id="zoomOut" title="Zoom −">−</button>
+      <button class="zoom-btn" id="zoomReset" title="Reset" style="font-size:13px"><i class="ti ti-focus-2"></i></button>
+    </div>
+
+    <!-- Detail panel (inside map-wrap so it slides over map) -->
+    <div class="detail" id="detailPanel">
+      <div class="det-drag"></div>
+    
