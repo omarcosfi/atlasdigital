@@ -2,282 +2,791 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Campus Map — Estácio JNE</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Mapa do Campus — Estácio FMJ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --or:#E8410A;--or-l:#FDF1EC;--or-m:#F4845F;--or-d:#C03408;
-  --nv:#1A2744;--nv-l:#EEF1F8;--nv-m:#3D5080;--nv-ll:#F5F7FC;
-  --gn:#2D7D4F;--gn-l:#EAF4EE;--gn-m:#5BAB7C;
-  --pu:#5A3DB5;--pu-l:#F0EEF9;--pu-m:#8B74D4;
-  --am:#8A5A00;--am-l:#FFF8EB;--am-m:#D4920A;
-  --rd:#A32D2D;--rd-l:#FFF0F0;
-  --gy:#6B7280;--gy-l:#F3F4F6;--gy-m:#9CA3AF;
-  --bg:#F5F4F0;--wh:#FFFFFF;--bdr:#E4E2DC;
-  --sh:0 2px 12px rgba(0,0,0,.08);--sh-lg:0 8px 32px rgba(0,0,0,.12);
-  --r:12px;--r-sm:8px;--r-xs:6px;
-  --sidebar:300px;--top-h:60px;
+  --teal:#3DB8AA;--teal-dk:#2A9688;--teal-lt:#E8F7F5;--teal-mid:#6ECEC4;
+  --blue:#2980C4;--blue-dk:#1A5F9A;
+  --blk-color:#1C3A5E;       /* single block color */
+  --blk-hover:#254875;
+  --c-park:#004AAD;           /* parking blue — from SVG */
+  --c-path:#FFDE59;           /* walking path yellow — from SVG */
+  --c-leisure:#00BF63;        /* leisure green — from SVG */
+  --c-canteen:#FF751F;        /* canteen orange — from SVG */
+  --c-entrance:#CB6CE6;       /* entrance purple — from SVG */
+  --white:#FFFFFF;--bg:#F4F3EF;--bdr:#DDD9D2;
+  --gy:#6B7280;--gy-md:#9CA3AF;--navy:#1C2B4A;
+  --r:12px;--r-sm:8px;--r-xs:5px;
 }
-html,body{height:100%;overflow:hidden;background:var(--bg);font-family:'DM Sans',sans-serif}
-@media(max-width:768px){
-  :root{--sidebar:100%;--top-h:56px}
-  html,body{overflow:auto}
-}
+html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;overflow:hidden}
+@media(max-width:720px){html,body{overflow:auto}}
 
 /* ── TOP BAR ── */
-.topbar{position:fixed;top:0;left:0;right:0;height:var(--top-h);background:var(--nv);display:flex;align-items:center;padding:0 16px;z-index:100;gap:12px}
-.topbar-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.topbar-emblem{width:34px;height:34px;background:var(--or);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff;flex-shrink:0}
-.topbar-title{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:#fff;line-height:1.2}
-.topbar-sub{font-size:10px;color:rgba(255,255,255,.5);font-weight:300}
-.topbar-search{flex:1;max-width:280px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:0.5px solid rgba(255,255,255,.15);border-radius:var(--r-sm);padding:7px 11px;margin-left:auto}
-.topbar-search input{border:none;background:transparent;font-size:12px;color:#fff;outline:none;width:100%;font-family:'DM Sans',sans-serif}
-.topbar-search input::placeholder{color:rgba(255,255,255,.4)}
-.topbar-search i{color:rgba(255,255,255,.5);font-size:14px;flex-shrink:0}
-.topbar-menu-btn{display:none;width:36px;height:36px;border:0.5px solid rgba(255,255,255,.2);border-radius:var(--r-sm);background:transparent;cursor:pointer;color:#fff;font-size:18px;align-items:center;justify-content:center;flex-shrink:0}
-@media(max-width:768px){.topbar-menu-btn{display:flex}.topbar-search{max-width:unset;flex:1}}
+.bar{
+  position:fixed;inset:0 0 auto 0;height:58px;
+  background:linear-gradient(135deg,#2A9688 0%,#3DB8AA 52%,#2980C4 100%);
+  display:flex;align-items:center;gap:12px;padding:0 14px;
+  z-index:200;box-shadow:0 2px 16px rgba(0,0,0,.2)
+}
+.bar-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.bar-em{width:36px;height:36px;flex-shrink:0}
+.bar-tt{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:#fff;line-height:1.2;white-space:nowrap}
+.bar-st{font-size:9.5px;color:rgba(255,255,255,.62);font-weight:300}
+.bar-sw{flex:1;max-width:320px;position:relative;margin-left:auto}
+.bar-si{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.26);border-radius:var(--r-sm);padding:7px 11px;transition:background .15s}
+.bar-si:focus-within{background:rgba(255,255,255,.24)}
+.bar-si i{color:rgba(255,255,255,.65);font-size:14px;flex-shrink:0}
+.bar-si input{border:none;background:transparent;font-size:12px;color:#fff;outline:none;width:100%;font-family:'DM Sans',sans-serif}
+.bar-si input::placeholder{color:rgba(255,255,255,.48)}
+.sdrop{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--white);border:1px solid var(--bdr);border-radius:var(--r-sm);box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:300;overflow:hidden;display:none}
+.sdrop.show{display:block}
+.sd-item{display:flex;align-items:center;gap:9px;padding:9px 12px;cursor:pointer;border-bottom:.5px solid var(--bdr);transition:background .12s}
+.sd-item:last-child{border-bottom:none}
+.sd-item:hover{background:var(--teal-lt)}
+.sd-badge{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:10px;color:#fff;background:var(--blk-color);flex-shrink:0}
+.sd-name{font-size:12px;font-weight:500;color:var(--navy);flex:1}
+.sd-sub{font-size:10px;color:var(--gy)}
+.sd-tag{font-size:9px;padding:1px 6px;border-radius:8px;border:.5px solid;flex-shrink:0}
+.bar-mbtn{display:none;width:36px;height:36px;border:1px solid rgba(255,255,255,.24);border-radius:var(--r-sm);background:transparent;cursor:pointer;color:#fff;font-size:18px;align-items:center;justify-content:center;flex-shrink:0}
+@media(max-width:720px){.bar-mbtn{display:flex}.bar-sw{max-width:unset;flex:1}}
 
 /* ── LAYOUT ── */
-.layout{display:flex;height:100vh;padding-top:var(--top-h)}
-@media(max-width:768px){.layout{flex-direction:column;height:auto;overflow:visible}}
+.layout{display:flex;height:100vh;padding-top:58px}
+@media(max-width:720px){.layout{flex-direction:column;height:auto}}
 
 /* ── SIDEBAR ── */
-.sidebar{width:var(--sidebar);min-width:var(--sidebar);background:var(--wh);border-right:0.5px solid var(--bdr);display:flex;flex-direction:column;overflow:hidden;height:calc(100vh - var(--top-h));position:sticky;top:var(--top-h)}
-@media(max-width:768px){
-  .sidebar{position:fixed;top:var(--top-h);left:0;right:0;bottom:0;width:100%;height:calc(100dvh - var(--top-h));z-index:90;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);border-right:none;box-shadow:var(--sh-lg)}
-  .sidebar.mobile-open{transform:translateX(0)}
+.side{width:282px;min-width:282px;background:var(--white);border-right:1px solid var(--bdr);display:flex;flex-direction:column;height:calc(100vh - 58px);overflow:hidden}
+@media(max-width:720px){
+  .side{position:fixed;top:58px;left:0;bottom:0;width:86vw;max-width:296px;z-index:180;transform:translateX(-108%);transition:transform .24s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(0,0,0,.14)}
+  .side.open{transform:translateX(0)}
 }
-
-.filters-bar{padding:12px 14px;border-bottom:0.5px solid var(--bdr);background:var(--wh)}
-.filters-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.9px;color:var(--gy);margin-bottom:7px}
-.filters-scroll{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
-.filters-scroll::-webkit-scrollbar{display:none}
-.chip{font-size:10px;padding:5px 9px;border-radius:20px;border:0.5px solid var(--bdr);background:var(--wh);color:var(--gy);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .15s;white-space:nowrap;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.back{display:none;position:fixed;inset:0;background:rgba(0,0,0,.28);z-index:170}
+@media(max-width:720px){.back.show{display:block}}
+.fstrip{padding:10px 12px;border-bottom:1px solid var(--bdr)}
+.flbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.9px;color:var(--gy);margin-bottom:7px}
+.frow{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.frow::-webkit-scrollbar{display:none}
+.chip{display:flex;align-items:center;gap:3px;font-size:10px;padding:4px 9px;border-radius:20px;border:1px solid var(--bdr);background:var(--white);color:var(--gy);cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .13s;flex-shrink:0}
 .chip i{font-size:11px}
-.chip.on-navy{background:var(--nv);color:#fff;border-color:var(--nv)}
-.chip.on-orange{background:var(--or);color:#fff;border-color:var(--or)}
-
-.blocks-scroll{flex:1;overflow-y:auto;padding:8px 10px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent}
-.blocks-scroll::-webkit-scrollbar{width:4px}
-.blocks-scroll::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
-
-.blk-row{display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:var(--r-sm);cursor:pointer;transition:all .15s;border:0.5px solid transparent;margin-bottom:2px}
-.blk-row:hover{background:var(--bg);border-color:var(--bdr)}
-.blk-row.sel{background:var(--or-l);border-color:var(--or-m)}
-.blk-badge{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:#fff;flex-shrink:0}
-.blk-text{flex:1;min-width:0}
-.blk-name{font-size:12px;font-weight:500;color:var(--nv)}
-.blk-ct{font-size:10px;color:var(--gy)}
-.blk-arr{font-size:12px;color:var(--gy-m)}
+.chip.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.chip.on-dk{background:var(--blk-color);color:#fff;border-color:var(--blk-color)}
+.blist{flex:1;overflow-y:auto;padding:7px 9px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent}
+.blist::-webkit-scrollbar{width:3px}
+.blist::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
+.brow{display:flex;align-items:center;gap:9px;padding:8px 8px;border-radius:var(--r-sm);cursor:pointer;border:1px solid transparent;transition:all .13s;margin-bottom:2px}
+.brow:hover{background:var(--bg);border-color:var(--bdr)}
+.brow.sel{background:var(--teal-lt);border-color:var(--teal-mid)}
+.brow-badge{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:11px;color:#fff;background:var(--blk-color);flex-shrink:0}
+.brow-info{flex:1;min-width:0}
+.brow-name{font-size:12px;font-weight:500;color:var(--navy)}
+.brow-ct{font-size:10px;color:var(--gy)}
+.brow-arr{font-size:12px;color:var(--gy-md)}
+.side-nores{padding:20px;text-align:center;font-size:12px;color:var(--gy);font-style:italic}
 
 /* ── MAP ── */
-.map-wrap{flex:1;position:relative;overflow:hidden;background:#B8CE85}
-@media(max-width:768px){.map-wrap{height:55vh;min-height:320px;overflow:hidden}}
-.map-svg-wrap{width:100%;height:100%;position:absolute;top:0;left:0}
-.map-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
-.map-overlay>*{pointer-events:all}
+.mapwrap{flex:1;position:relative;overflow:hidden;background:#7A9E3A;cursor:grab}
+.mapwrap:active{cursor:grabbing}
+@media(max-width:720px){.mapwrap{height:56vh;min-height:290px;flex:none}}
+.map-inner{position:absolute;inset:0;transform-origin:0 0;will-change:transform}
 
-/* block buttons on map */
-.mb{position:absolute;display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform .2s,filter .2s;z-index:5;transform-origin:center bottom}
-.mb:hover{transform:translateY(-3px) scale(1.04)}
-.mb.sel{transform:translateY(-3px) scale(1.05)}
-.mb-box{border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;color:#fff;box-shadow:0 3px 10px rgba(0,0,0,.2);transition:box-shadow .2s}
-.mb.sel .mb-box{box-shadow:0 0 0 3px #fff,0 4px 16px rgba(0,0,0,.3)}
-.mb.dim .mb-box{opacity:.3}
-.mb-lbl{font-size:8px;font-weight:500;color:var(--nv);background:rgba(255,255,255,.88);padding:2px 5px;border-radius:4px;margin-top:3px;white-space:nowrap;text-align:center;max-width:72px;line-height:1.3;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+/* ── BLOCK BUTTONS — no flex-direction, fixed size, label below ── */
+.mb{
+  position:absolute;
+  cursor:pointer;
+  z-index:10;
+}
+.mb-box{
+  position:absolute;top:0;left:0;
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;color:#fff;
+  background:var(--blk-color);
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+  transition:transform .16s,box-shadow .16s,opacity .16s;
+}
+.mb:hover .mb-box{transform:translateY(-2px) scale(1.04);box-shadow:0 5px 16px rgba(0,0,0,.3)}
+.mb.sel .mb-box{transform:translateY(-3px) scale(1.05);box-shadow:0 0 0 3px #fff,0 5px 18px rgba(0,0,0,.32)}
+.mb.dim .mb-box{opacity:.2}
+.mb-lbl{
+  position:absolute;
+  left:50%;transform:translateX(-50%);
+  white-space:nowrap;
+  font-size:8px;font-weight:500;
+  color:var(--navy);
+  background:rgba(255,255,255,.92);
+  padding:2px 5px;border-radius:4px;
+  box-shadow:0 1px 4px rgba(0,0,0,.12);
+  pointer-events:none;
+  line-height:1.3;
+  max-width:88px;text-align:center;
+}
 
-.map-pin{position:absolute;display:flex;flex-direction:column;align-items:center;cursor:pointer;z-index:6;transition:transform .2s}
-.map-pin:hover{transform:scale(1.1)}
-.pin-circle{width:20px;height:20px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.2)}
-.pin-lbl{font-size:8px;color:var(--nv);background:rgba(255,255,255,.9);padding:2px 5px;border-radius:4px;margin-top:2px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+/* ── MAP OVERLAY ELEMENTS (paths, leisure, parking, canteens) ── */
+.map-svg{position:absolute;inset:0;width:100%;height:100%}
 
-.map-legend{position:absolute;bottom:12px;left:12px;background:rgba(255,255,255,.92);border:0.5px solid var(--bdr);border-radius:var(--r-sm);padding:9px 11px;z-index:8;backdrop-filter:blur(4px)}
-@media(max-width:768px){.map-legend{display:none}}
-.leg-t{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--gy);margin-bottom:7px}
-.leg-i{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--nv);margin-bottom:4px}
+/* pins */
+.mpin{position:absolute;display:flex;flex-direction:column;align-items:center;z-index:8;cursor:default;transform:translate(-50%,-50%)}
+.mpin-c{width:20px;height:20px;border-radius:50%;border:2.5px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 7px rgba(0,0,0,.24)}
+.mpin-c i{font-size:9px;color:#fff}
+.mpin-lbl{font-size:7.5px;color:var(--navy);background:rgba(255,255,255,.92);padding:2px 5px;border-radius:4px;margin-top:2px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.1);pointer-events:none}
+
+/* legend */
+.legend{position:absolute;bottom:12px;left:12px;background:rgba(255,255,255,.93);border:1px solid var(--bdr);border-radius:var(--r-sm);padding:9px 12px;z-index:8;backdrop-filter:blur(6px)}
+@media(max-width:720px){.legend{display:none}}
+.leg-h{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--gy);margin-bottom:6px}
+.leg-i{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--navy);margin-bottom:3px}
 .leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
 
-.zoom-btns{position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;z-index:8}
-.zoom-btn{width:30px;height:30px;background:rgba(255,255,255,.92);border:0.5px solid var(--bdr);border-radius:var(--r-xs);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--nv);font-weight:500;transition:background .15s;backdrop-filter:blur(4px)}
-.zoom-btn:hover{background:#fff}
+/* zoom */
+.zbw{position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;z-index:8}
+.zb{width:30px;height:30px;background:rgba(255,255,255,.9);border:1px solid var(--bdr);border-radius:var(--r-xs);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--navy);backdrop-filter:blur(4px);transition:background .13s}
+.zb:hover{background:#fff}
 
 /* ── DETAIL PANEL ── */
-.detail{position:absolute;top:0;right:0;bottom:0;width:290px;background:var(--wh);border-left:0.5px solid var(--bdr);transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);overflow-y:auto;z-index:30;display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent}
+.detail{
+  position:absolute;top:0;right:0;bottom:0;width:296px;
+  background:var(--white);border-left:1px solid var(--bdr);
+  transform:translateX(100%);transition:transform .26s cubic-bezier(.4,0,.2,1);
+  z-index:50;display:flex;flex-direction:column;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--bdr) transparent
+}
 .detail.open{transform:translateX(0)}
-@media(max-width:768px){
-  .detail{position:fixed;left:0;right:0;bottom:0;top:auto;width:100%;height:72vh;border-left:none;border-top:0.5px solid var(--bdr);border-radius:20px 20px 0 0;transform:translateY(100%);box-shadow:var(--sh-lg)}
+.detail::-webkit-scrollbar{width:3px}
+.detail::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
+@media(max-width:720px){
+  .detail{position:fixed;left:0;right:0;bottom:0;top:auto;width:100%;
+    height:72vh;border-left:none;border-top:1px solid var(--bdr);
+    border-radius:18px 18px 0 0;transform:translateY(104%);
+    box-shadow:0 -8px 32px rgba(0,0,0,.12)}
   .detail.open{transform:translateY(0)}
 }
-.det-drag{display:none;width:36px;height:4px;background:var(--bdr);border-radius:2px;margin:10px auto 0;flex-shrink:0}
-@media(max-width:768px){.det-drag{display:block}}
-
-.det-hd{padding:14px 16px 12px;border-bottom:0.5px solid var(--bdr);position:sticky;top:0;background:var(--wh);z-index:2}
-.det-close{position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:50%;border:0.5px solid var(--bdr);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--gy);transition:background .15s}
-.det-close:hover{background:var(--bdr)}
-.det-emblem{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#fff;margin-bottom:8px}
-.det-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:var(--nv)}
-.det-sub{font-size:11px;color:var(--gy);margin-top:1px}
-
-/* mini map of block */
-.mini-map{margin:12px 16px;border-radius:var(--r);border:0.5px solid var(--bdr);overflow:hidden;background:#E8F0D0}
+.drag-h{display:none;width:38px;height:4px;background:var(--bdr);border-radius:2px;margin:10px auto 0;flex-shrink:0}
+@media(max-width:720px){.drag-h{display:block}}
+.det-hd{padding:14px 16px 12px;border-bottom:1px solid var(--bdr);position:sticky;top:0;background:var(--white);z-index:2}
+.det-cls{position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:50%;border:1px solid var(--bdr);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--gy)}
+.det-cls:hover{background:var(--bdr)}
+.det-em{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#fff;background:var(--blk-color);margin-bottom:8px}
+.det-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:var(--navy)}
+.det-sub{font-size:11px;color:var(--gy);margin-top:2px}
+.mini-map{margin:10px 14px;border-radius:var(--r-sm);border:1px solid var(--bdr);overflow:hidden;background:#DFF0C0}
 .mini-map svg{width:100%;display:block}
-
-.det-body{padding:8px 14px 20px;flex:1}
-.sec-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.9px;color:var(--gy);margin:10px 0 6px;padding-top:4px}
-.room-card{background:var(--bg);border-radius:var(--r-sm);padding:9px 11px;margin-bottom:5px;cursor:pointer;border:0.5px solid transparent;transition:all .18s}
-.room-card:hover{background:var(--or-l);border-color:var(--or-m)}
-.room-card.open{background:var(--or-l);border-color:var(--or)}
+.det-body{padding:8px 14px 24px}
+.sec-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--gy);margin:12px 0 6px}
+.rcard{background:var(--bg);border-radius:var(--r-sm);padding:9px 11px;margin-bottom:5px;cursor:pointer;border:1px solid transparent;transition:all .14s}
+.rcard:hover{background:var(--teal-lt);border-color:var(--teal-mid)}
+.rcard.open{background:var(--teal-lt);border-color:var(--teal)}
 .rc-top{display:flex;align-items:center;gap:8px}
-.rc-icon{font-size:14px;flex-shrink:0;transition:color .15s}
-.rc-name{font-size:12px;font-weight:500;color:var(--nv);flex:1;line-height:1.3}
-.rc-arr{font-size:11px;color:var(--gy-m);transition:transform .2s}
-.room-card.open .rc-arr{transform:rotate(90deg)}
+.rc-ico{font-size:14px;flex-shrink:0;color:var(--teal-dk)}
+.rc-name{font-size:12px;font-weight:500;color:var(--navy);flex:1;line-height:1.3}
+.rc-arr{font-size:11px;color:var(--gy-md);transition:transform .18s;flex-shrink:0}
+.rcard.open .rc-arr{transform:rotate(90deg)}
 .rc-tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}
-.tag{font-size:9px;padding:2px 7px;border-radius:10px;border:0.5px solid;display:inline-block}
-
-.rc-detail{display:none;margin-top:8px;background:var(--wh);border:0.5px solid var(--bdr);border-radius:var(--r-sm);overflow:hidden}
-.room-card.open .rc-detail{display:block}
-.rcd-row{display:flex;align-items:flex-start;gap:9px;padding:7px 10px;border-bottom:0.5px solid var(--bdr);font-size:11px}
+.tag{font-size:9px;padding:2px 7px;border-radius:10px;border:.5px solid;display:inline-block}
+.rcard-detail{display:none;margin-top:8px;background:var(--white);border:1px solid var(--bdr);border-radius:var(--r-sm);overflow:hidden}
+.rcard.open .rcard-detail{display:block}
+.rcd-row{display:flex;align-items:flex-start;gap:9px;padding:7px 10px;border-bottom:.5px solid var(--bdr);font-size:11px}
 .rcd-row:last-child{border-bottom:none}
 .rcd-row i{font-size:13px;color:var(--gy);flex-shrink:0;margin-top:1px}
-.rcd-lbl{color:var(--gy);min-width:62px;flex-shrink:0}
-.rcd-val{color:var(--nv)}
-
+.rcd-lbl{color:var(--gy);min-width:64px;flex-shrink:0}
+.rcd-val{color:var(--navy)}
 .no-res{padding:16px;text-align:center;font-size:12px;color:var(--gy);font-style:italic}
-
-/* tag colors */
-.tag-sala{background:#EEF1F8;color:#1A2744;border-color:#C5CDE3}
-.tag-lab{background:#FDF0EB;color:#C1370A;border-color:#F4845F}
-.tag-admin{background:#EAF4EE;color:#1A5C36;border-color:#7DC5A0}
+.tag-sala{background:#EEF2FA;color:#2E4070;border-color:#B0BEEF}
+.tag-lab{background:#E6F4EC;color:#1A6B3A;border-color:#7DCCA0}
+.tag-admin{background:#FFF8E6;color:#5A4000;border-color:#F0C96A}
 .tag-wc{background:#F0EEF9;color:#5A3DB5;border-color:#B9ABE8}
-.tag-social{background:#FFF8EB;color:#8A5A00;border-color:#F0C06A}
-.tag-saude{background:#FFF0F0;color:#A32D2D;border-color:#F09595}
+.tag-saude{background:#FDECEA;color:#A81820;border-color:#F09595}
+.tag-social{background:#FFF3E0;color:#7A4F00;border-color:#F0C06A}
 .tag-biblioteca{background:#E6F1FB;color:#185FA5;border-color:#85B7EB}
-.tag-informatica{background:#F0EEF9;color:#5A3DB5;border-color:#B9ABE8}
-
-/* overlay backdrop mobile */
-.backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:88}
-@media(max-width:768px){.backdrop.show{display:block}}
-
-/* pill count badge on topbar */
-.result-badge{background:var(--or);color:#fff;font-size:9px;font-weight:600;padding:2px 6px;border-radius:10px;margin-left:4px;display:none}
-.result-badge.show{display:inline-block}
-
-/* pulse anim for selected on map */
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(232,65,10,.4)}70%{box-shadow:0 0 0 8px rgba(232,65,10,0)}100%{box-shadow:0 0 0 0 rgba(232,65,10,0)}}
-.mb.sel .mb-box{animation:pulse 1.5s ease-out}
-
-/* map pan/zoom container */
-.map-inner{position:absolute;inset:0;transform-origin:0 0;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.tag-informatica{background:#E8F7F5;color:#2A9688;border-color:#7DCEC8}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(61,184,170,.5)}70%{box-shadow:0 0 0 10px rgba(61,184,170,0)}100%{box-shadow:0 0 0 0 rgba(61,184,170,0)}}
+.mb.sel .mb-box{animation:pulse 1.6s ease-out}
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
-<header class="topbar">
-  <a class="topbar-logo" href="#">
-    <div class="topbar-emblem">E</div>
-    <div class="topbar-title">Estácio JNE<div class="topbar-sub">Mapa do Campus</div></div>
+<header class="bar">
+  <a class="bar-logo" href="#">
+    <div class="bar-em">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="dg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#5DDDD0"/>
+            <stop offset="50%" stop-color="#3BB8AA"/>
+            <stop offset="100%" stop-color="#2278C0"/>
+          </linearGradient>
+          <filter id="ds" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="rgba(0,0,0,.3)"/>
+          </filter>
+        </defs>
+        <!-- Diamond -->
+        <path d="M18 1 L35 18 L18 35 L1 18 Z" fill="url(#dg)" filter="url(#ds)"/>
+        <!-- Facet lines -->
+        <line x1="1" y1="18" x2="35" y2="18" stroke="rgba(255,255,255,.4)" stroke-width="1"/>
+        <line x1="18" y1="1" x2="18" y2="35" stroke="rgba(255,255,255,.4)" stroke-width="1"/>
+        <line x1="1" y1="18" x2="18" y2="1" stroke="rgba(255,255,255,.25)" stroke-width=".8"/>
+        <line x1="35" y1="18" x2="18" y2="1" stroke="rgba(255,255,255,.25)" stroke-width=".8"/>
+        <line x1="1" y1="18" x2="18" y2="35" stroke="rgba(255,255,255,.25)" stroke-width=".8"/>
+        <line x1="35" y1="18" x2="18" y2="35" stroke="rgba(255,255,255,.25)" stroke-width=".8"/>
+        <!-- Highlight top facet -->
+        <path d="M18 1 L35 18 L18 18 L1 18 Z" fill="rgba(255,255,255,.09)"/>
+      </svg>
+    </div>
+    <div class="bar-tt">Estácio FMJ<div class="bar-st">Mapa do Campus</div></div>
   </a>
-  <div class="topbar-search">
-    <i class="ti ti-search" aria-hidden="true"></i>
-    <input type="text" id="searchInput" placeholder="Buscar sala, lab, banheiro…">
-    <span class="result-badge" id="resultBadge"></span>
+  <div class="bar-sw">
+    <div class="bar-si">
+      <i class="ti ti-search"></i>
+      <input type="text" id="searchInput" placeholder="Buscar bloco, sala, laboratório…" autocomplete="off">
+    </div>
+    <div class="sdrop" id="searchDrop"></div>
   </div>
-  <button class="topbar-menu-btn" id="menuBtn" aria-label="Menu">
-    <i class="ti ti-layout-sidebar-left-expand"></i>
-  </button>
+  <button class="bar-mbtn" id="menuBtn" aria-label="Menu"><i class="ti ti-menu-2"></i></button>
 </header>
 
-<div class="backdrop" id="backdrop"></div>
+<div class="back" id="backdrop"></div>
 
 <div class="layout">
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="filters-bar">
-      <div class="filters-label">Filtrar por tipo</div>
-      <div class="filters-scroll" id="filtersBar">
-        <div class="chip on-navy" data-f="all"><i class="ti ti-layout-grid"></i>Todos</div>
+  <aside class="side" id="sidebar">
+    <div class="fstrip">
+      <div class="flbl">Filtrar por tipo</div>
+      <div class="frow" id="filtersRow">
+        <div class="chip on-dk" data-f="all"><i class="ti ti-layout-grid"></i>Todos</div>
         <div class="chip" data-f="sala"><i class="ti ti-school"></i>Salas</div>
         <div class="chip" data-f="lab"><i class="ti ti-microscope"></i>Labs</div>
-        <div class="chip" data-f="informatica"><i class="ti ti-device-laptop"></i>Informática</div>
-        <div class="chip" data-f="admin"><i class="ti ti-briefcase"></i>Administrativo</div>
+        <div class="chip" data-f="informatica"><i class="ti ti-device-laptop"></i>Info.</div>
+        <div class="chip" data-f="admin"><i class="ti ti-briefcase"></i>Admin</div>
         <div class="chip" data-f="wc"><i class="ti ti-accessible"></i>Banheiros</div>
         <div class="chip" data-f="biblioteca"><i class="ti ti-books"></i>Biblioteca</div>
         <div class="chip" data-f="saude"><i class="ti ti-first-aid-kit"></i>Saúde</div>
         <div class="chip" data-f="social"><i class="ti ti-coffee"></i>Social</div>
       </div>
     </div>
-    <div class="blocks-scroll" id="blocksList"></div>
+    <div class="blist" id="blocksList"></div>
   </aside>
 
-  <!-- MAP AREA -->
-  <main class="map-wrap" id="mapWrap">
+  <main class="mapwrap" id="mapWrap">
     <div class="map-inner" id="mapInner">
-      <svg class="map-svg-wrap" viewBox="0 0 700 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-        <!-- ground -->
-        <rect width="700" height="600" fill="#A8C070"/>
-        <!-- campus boundary -->
-        <polygon points="75,570 610,570 650,490 640,60 460,20 70,40 40,200 50,510" fill="#C5DC98" opacity=".7"/>
-        <!-- roads -->
-        <rect x="0" y="550" width="700" height="50" fill="#7A9050" opacity=".7"/>
-        <text x="100" y="572" font-size="10" fill="#4A6020" font-family="DM Sans,sans-serif">Av. Ten. Raimundo Rocha</text>
-        <rect x="0" y="0" width="28" height="600" fill="#7A9050" opacity=".5"/>
-        <rect x="0" y="8" width="700" height="26" fill="#7A9050" opacity=".5"/>
-        <text x="200" y="22" font-size="9" fill="#3A4A18" font-family="DM Sans,sans-serif">R. Danilo Landim Leite</text>
-        <text x="8" y="300" font-size="9" fill="#3A4A18" font-family="DM Sans,sans-serif" transform="rotate(-90,14,300)">R. José Agostinho de Oliveira</text>
-        <!-- internal path / corridor -->
-        <path d="M260,540 L260,420 L310,360 L310,45" stroke="#D0E4A0" stroke-width="18" fill="none" stroke-linecap="round"/>
-        <path d="M310,250 L580,250" stroke="#D0E4A0" stroke-width="14" fill="none" stroke-linecap="round"/>
-        <path d="M310,360 L580,360" stroke="#D0E4A0" stroke-width="14" fill="none" stroke-linecap="round"/>
-        <path d="M310,450 L570,450" stroke="#D0E4A0" stroke-width="12" fill="none" stroke-linecap="round"/>
-        <!-- parking area -->
-        <rect x="78" y="390" width="155" height="125" rx="4" fill="#B0C878" opacity=".5"/>
-        <!-- parking spots rows -->
-        <g fill="#8AAA50" opacity=".6">
-          <rect x="90" y="402" width="12" height="20" rx="2"/><rect x="106" y="402" width="12" height="20" rx="2"/><rect x="122" y="402" width="12" height="20" rx="2"/><rect x="138" y="402" width="12" height="20" rx="2"/><rect x="154" y="402" width="12" height="20" rx="2"/><rect x="170" y="402" width="12" height="20" rx="2"/><rect x="186" y="402" width="12" height="20" rx="2"/>
-          <rect x="90" y="427" width="12" height="20" rx="2"/><rect x="106" y="427" width="12" height="20" rx="2"/><rect x="122" y="427" width="12" height="20" rx="2"/><rect x="138" y="427" width="12" height="20" rx="2"/><rect x="154" y="427" width="12" height="20" rx="2"/><rect x="170" y="427" width="12" height="20" rx="2"/><rect x="186" y="427" width="12" height="20" rx="2"/>
-          <rect x="90" y="452" width="12" height="20" rx="2"/><rect x="106" y="452" width="12" height="20" rx="2"/><rect x="122" y="452" width="12" height="20" rx="2"/><rect x="138" y="452" width="12" height="20" rx="2"/><rect x="154" y="452" width="12" height="20" rx="2"/><rect x="170" y="452" width="12" height="20" rx="2"/><rect x="186" y="452" width="12" height="20" rx="2"/>
-          <rect x="90" y="478" width="12" height="20" rx="2"/><rect x="106" y="478" width="12" height="20" rx="2"/><rect x="122" y="478" width="12" height="20" rx="2"/><rect x="138" y="478" width="12" height="20" rx="2"/><rect x="154" y="478" width="12" height="20" rx="2"/><rect x="170" y="478" width="12" height="20" rx="2"/><rect x="186" y="478" width="12" height="20" rx="2"/>
+
+      <!--
+        SVG base map — coordinates match real uploaded SVG (viewBox 793.5 x 690.75)
+        Colors from original:
+          #000000 = roads (black)
+          #004AAD = parking/internal roads (dark blue)
+          #FFDE59 = walking paths (yellow)
+          #00BF63 = leisure areas (green)
+          #FF751F = canteens (orange)
+          #CB6CE6 = entrance (purple)
+          #B4AEAE = blocks (gray — replaced by our navy blue)
+      -->
+      <svg id="baseSvg" viewBox="0 0 793.5 690.75" xmlns="http://www.w3.org/2000/svg"
+           style="position:absolute;inset:0;width:100%;height:100%" preserveAspectRatio="xMidYMid slice">
+
+        <!-- Ground -->
+        <rect width="793.5" height="690.75" fill="#7A9E3A"/>
+
+        <!-- ── ROADS (black) ── -->
+        <!-- Bottom-left road -->
+        <rect x="3" y="59" width="380" height="66" rx="2" fill="#2A2A2A"/>
+        <!-- Bottom road continuation -->
+        <rect x="17" y="624" width="380" height="50" rx="2" fill="#2A2A2A"/>
+        <!-- Bottom right road -->
+        <rect x="411" y="610" width="365" height="52" rx="2" fill="#2A2A2A"/>
+        <!-- Road junction -->
+        <rect x="390" y="636" width="26" height="51" rx="1" fill="#2A2A2A"/>
+
+        <!-- Road name labels -->
+        <text x="30" y="95" font-size="9" fill="rgba(255,255,255,.7)" font-family="DM Sans,sans-serif">Av. Padre Cícero</text>
+        <text x="430" y="635" font-size="9" fill="rgba(255,255,255,.7)" font-family="DM Sans,sans-serif">Av. Leão Sampaio</text>
+        <text x="30" y="650" font-size="9" fill="rgba(255,255,255,.7)" font-family="DM Sans,sans-serif">Rua João Pessoa</text>
+
+        <!-- ── PARKING / INTERNAL ROADS (dark blue #004AAD) ── -->
+        <!-- Vertical spine road through campus -->
+        <rect x="387" y="80" width="24" height="556" rx="2" fill="#004AAD" opacity=".85"/>
+        <!-- Top horizontal access -->
+        <rect x="411" y="80" width="36" height="17" rx="1" fill="#004AAD" opacity=".85"/>
+        <!-- Parking slots top right (two columns) -->
+        <rect x="444" y="80" width="25" height="128" rx="2" fill="#004AAD" opacity=".75"/>
+        <rect x="478" y="80" width="25" height="128" rx="2" fill="#004AAD" opacity=".75"/>
+        <!-- gap connectors -->
+        <rect x="469" y="80" width="9" height="29" rx="1" fill="#004AAD" opacity=".6"/>
+        <rect x="469" y="179" width="9" height="29" rx="1" fill="#004AAD" opacity=".6"/>
+        <!-- Main left parking lot -->
+        <rect x="37" y="366" width="150" height="208" rx="3" fill="#004AAD" opacity=".65"/>
+        <!-- Parking grid lines -->
+        <g stroke="#003A8C" stroke-width=".8" opacity=".4">
+          <line x1="60" y1="366" x2="60" y2="574"/><line x1="80" y1="366" x2="80" y2="574"/>
+          <line x1="100" y1="366" x2="100" y2="574"/><line x1="120" y1="366" x2="120" y2="574"/>
+          <line x1="140" y1="366" x2="140" y2="574"/><line x1="160" y1="366" x2="160" y2="574"/>
+          <line x1="37" y1="406" x2="187" y2="406"/><line x1="37" y1="446" x2="187" y2="446"/>
+          <line x1="37" y1="486" x2="187" y2="486"/><line x1="37" y1="526" x2="187" y2="526"/>
         </g>
-        <text x="120" y="508" font-size="9" fill="#4A6020" font-family="DM Sans,sans-serif" font-weight="600">Estacionamento</text>
-        <!-- trees scattered -->
-        <g fill="#5A8A30" opacity=".55">
-          <circle cx="60" cy="100" r="18"/><circle cx="90" cy="80" r="14"/><circle cx="50" cy="140" r="12"/><circle cx="620" cy="90" r="20"/><circle cx="645" cy="130" r="14"/><circle cx="640" cy="170" r="16"/><circle cx="550" cy="50" r="18"/><circle cx="590" cy="35" r="14"/><circle cx="480" cy="30" r="12"/><circle cx="640" cy="280" r="16"/><circle cx="650" cy="350" r="14"/><circle cx="600" cy="500" r="18"/><circle cx="50" cy="310" r="14"/><circle cx="55" cy="370" r="12"/><circle cx="640" cy="430" r="16"/>
+        <text x="55" y="580" font-size="8" fill="rgba(255,255,255,.8)" font-family="DM Sans,sans-serif" font-weight="600">Estacionamento P</text>
+        <text x="448" y="218" font-size="7.5" fill="rgba(255,255,255,.75)" font-family="DM Sans,sans-serif" transform="rotate(-90,448,218)">Estacion.</text>
+
+        <!-- ── WALKING PATHS (yellow #FFDE59) ── -->
+        <!-- Main vertical walkway left of spine -->
+        <rect x="228" y="335" width="16" height="266" rx="3" fill="#FFDE59" opacity=".88"/>
+        <!-- Horizontal walkway across mid campus -->
+        <rect x="53" y="335" width="191" height="16" rx="3" fill="#FFDE59" opacity=".88"/>
+        <!-- Lower horizontal path -->
+        <rect x="117" y="585" width="111" height="16" rx="3" fill="#FFDE59" opacity=".88"/>
+        <!-- Right vertical path -->
+        <rect x="520" y="345" width="11" height="117" rx="2" fill="#FFDE59" opacity=".8"/>
+        <!-- Right-side paths -->
+        <rect x="606" y="379" width="11" height="80" rx="2" fill="#FFDE59" opacity=".8"/>
+        <rect x="616" y="379" width="55" height="14" rx="2" fill="#FFDE59" opacity=".8"/>
+        <rect x="658" y="322" width="13" height="57" rx="2" fill="#FFDE59" opacity=".8"/>
+        <!-- Lower path connector near entrance -->
+        <rect x="228" y="460" width="396" height="11" rx="2" fill="#FFDE59" opacity=".75"/>
+        <!-- Small path segment -->
+        <rect x="376" y="114" width="13" height="346" rx="2" fill="#FFDE59" opacity=".7"/>
+
+        <!-- Path at entrance area -->
+        <rect x="514" y="345" width="29" height="30" rx="3" fill="#FFDE59" opacity=".75"/>
+        <rect x="410" y="366" width="104" height="9" rx="2" fill="#FFDE59" opacity=".75"/>
+
+        <!-- ── LEISURE AREAS (green #00BF63) ── -->
+        <!-- Leisure 1 — left pair -->
+        <rect x="187" y="451" width="39" height="39" rx="4" fill="#00BF63" opacity=".85"/>
+        <rect x="188" y="515" width="39" height="39" rx="4" fill="#00BF63" opacity=".85"/>
+        <!-- Leisure 2 — right large -->
+        <rect x="458" y="389" width="66" height="66" rx="5" fill="#00BF63" opacity=".85"/>
+        <!-- bench icons -->
+        <text x="199" y="476" font-size="11" fill="rgba(0,80,0,.7)" font-family="serif">⛱</text>
+        <text x="199" y="540" font-size="11" fill="rgba(0,80,0,.7)" font-family="serif">⛱</text>
+        <text x="478" y="427" font-size="14" fill="rgba(0,80,0,.7)" font-family="serif">⛱</text>
+
+        <!-- ── CANTEENS (orange #FF751F) ── -->
+        <!-- Canteen 1 — near block C area -->
+        <rect x="326" y="416" width="56" height="46" rx="4" fill="#FF751F" opacity=".9"/>
+        <!-- Canteen 2 — upper area near J -->
+        <rect x="417" y="208" width="41" height="38" rx="4" fill="#FF751F" opacity=".9"/>
+        <!-- Fork/knife icon -->
+        <text x="342" y="444" font-size="13" fill="rgba(255,255,255,.9)" font-family="serif">🍽</text>
+        <text x="428" y="231" font-size="13" fill="rgba(255,255,255,.9)" font-family="serif">🍽</text>
+
+        <!-- ── ENTRANCE (purple #CB6CE6) ── -->
+        <rect x="122" y="593" width="39" height="17" rx="3" fill="#CB6CE6" opacity=".9"/>
+        <!-- Arrow indicator -->
+        <text x="130" y="605" font-size="10" fill="#fff" font-family="sans-serif">▶ Entrada</text>
+
+        <!-- campus boundary hint -->
+        <rect x="36" y="58" width="722" height="574" rx="6" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+        <!-- Trees / greenery -->
+        <g fill="#4A8020" opacity=".45">
+          <circle cx="80" cy="130" r="18"/><circle cx="52" cy="110" r="14"/><circle cx="50" cy="160" r="12"/>
+          <circle cx="48" cy="220" r="16"/><circle cx="52" cy="270" r="14"/><circle cx="50" cy="320" r="12"/>
+          <circle cx="740" cy="100" r="20"/><circle cx="760" cy="140" r="14"/><circle cx="750" cy="190" r="16"/>
+          <circle cx="745" cy="250" r="14"/><circle cx="752" cy="310" r="12"/>
+          <circle cx="720" cy="500" r="18"/><circle cx="742" cy="550" r="14"/>
+          <circle cx="600" cy="50" r="16"/><circle cx="640" cy="44" r="12"/><circle cx="680" cy="50" r="14"/>
+          <circle cx="710" cy="360" r="16"/><circle cx="724" cy="420" r="14"/>
+          <circle cx="260" cy="80" r="14"/><circle cx="230" cy="60" r="12"/><circle cx="300" cy="70" r="10"/>
+          <circle cx="100" cy="560" r="12"/><circle cx="130" cy="578" r="9"/>
+          <circle cx="680" cy="576" r="12"/><circle cx="706" cy="560" r="10"/>
         </g>
-        <!-- leisure/walkway circle -->
-        <circle cx="310" cy="460" r="26" fill="#90B860" opacity=".6"/>
-        <circle cx="310" cy="460" r="16" fill="#70A040" opacity=".5"/>
-        <text x="310" y="464" font-size="7" fill="#2A5010" font-family="DM Sans,sans-serif" text-anchor="middle">Lazer</text>
       </svg>
 
-      <!-- Block overlays rendered by JS -->
+      <!-- Block buttons rendered by JS over SVG -->
       <div id="mapBlocks" style="position:absolute;inset:0;pointer-events:none"></div>
     </div>
 
     <!-- Legend -->
-    <div class="map-legend">
-      <div class="leg-t">Legenda</div>
-      <div class="leg-i"><div class="leg-dot" style="background:#1A2744"></div>Administrativo</div>
-      <div class="leg-i"><div class="leg-dot" style="background:#E8410A"></div>Saúde / Clínicas</div>
-      <div class="leg-i"><div class="leg-dot" style="background:#2D7D4F"></div>Laboratórios</div>
-      <div class="leg-i"><div class="leg-dot" style="background:#5A3DB5"></div>Salas de Aula</div>
-      <div class="leg-i"><div class="leg-dot" style="background:#8A5A00"></div>Social / Lazer</div>
-      <div class="leg-i"><div class="leg-dot" style="background:#888780"></div>Em cadastramento</div>
+    <div class="legend">
+      <div class="leg-h">Legenda</div>
+      <div class="leg-i"><div class="leg-dot" style="background:var(--blk-color)"></div>Blocos</div>
+      <div class="leg-i"><div class="leg-dot" style="background:#004AAD"></div>Estacionamento / Vias</div>
+      <div class="leg-i"><div class="leg-dot" style="background:#FFDE59;border:1px solid #ccc"></div>Caminhos</div>
+      <div class="leg-i"><div class="leg-dot" style="background:#00BF63"></div>Área de Lazer</div>
+      <div class="leg-i"><div class="leg-dot" style="background:#FF751F"></div>Cantinas / Refeitórios</div>
+      <div class="leg-i"><div class="leg-dot" style="background:#CB6CE6"></div>Entrada</div>
     </div>
 
-    <!-- Zoom -->
-    <div class="zoom-btns">
-      <button class="zoom-btn" id="zoomIn" title="Zoom +">+</button>
-      <button class="zoom-btn" id="zoomOut" title="Zoom −">−</button>
-      <button class="zoom-btn" id="zoomReset" title="Reset" style="font-size:13px"><i class="ti ti-focus-2"></i></button>
+    <div class="zbw">
+      <button class="zb" id="zIn">+</button>
+      <button class="zb" id="zOut">−</button>
+      <button class="zb" id="zReset"><i class="ti ti-focus-2" style="font-size:13px"></i></button>
     </div>
 
-    <!-- Detail panel (inside map-wrap so it slides over map) -->
-    <div class="detail" id="detailPanel">
-      <div class="det-drag"></div>
-    
+    <!-- Detail panel -->
+    <div class="detail" id="detPanel">
+      <div class="drag-h"></div>
+      <div class="det-hd">
+        <button class="det-cls" id="detClose"><i class="ti ti-x"></i></button>
+        <div class="det-em" id="detEm">A</div>
+        <div class="det-title" id="detTitle">Bloco A</div>
+        <div class="det-sub" id="detSub">0 ambientes</div>
+      </div>
+      <div id="miniMapArea"></div>
+      <div class="det-body" id="detBody"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   BLOCK DATA
+   svgX/svgY/svgW/svgH = real coordinates from parsed SVG file
+   (viewBox 793.5 × 690.75)
+
+   Assignment based on PDF map + SVG positions:
+     A  (53,  278, 164, 67) — far left, wide horizontal → Admin
+     B  (257, 263, 59, 164) — left of spine, tall        → Biblioteca
+     I  (320, 263, 65, 145) — center tall (next to B)    → Salas de aula
+     J  (329, 114, 56, 123) — top center                 → Clínicas
+     K  (411, 316, 59,  50) — right of spine, mid        → CA Farmácia
+     D  (469, 275, 44,  91) — right cluster, upper       → Lab Veterinária
+     +  (510, 275, 33,  70) — connector to H
+     H  (620, 252, 107, 61) — far right, upper           → Labs Informática
+     C  cluster lower-center (257+292 area)              → Em cadastramento
+     F  (624, 396, 68,  83) — right mid-low              → Laboratórios
+     E  (253-335 lower)                                  → Em cadastramento
+     G  (638, 515, 33,  68) — far right, low             → Em cadastramento
+   ══════════════════════════════════════════════════════════════ */
+const VW = 793.5, VH = 690.75;
+
+const BLOCKS = {
+  A:{name:"Bloco A",desc:"Administração & Auditório",
+     svgX:53,svgY:278,svgW:164,svgH:67,
+     mini:[
+       {l:"Auditório",    x:4, y:4,  w:92,h:36,c:"#254875"},
+       {l:"Recepção",     x:4, y:44, w:28,h:22,c:"#1C3A5E"},
+       {l:"Secretaria",   x:36,y:44, w:28,h:22,c:"#1C3A5E"},
+       {l:"Matrículas",   x:68,y:44, w:28,h:22,c:"#1C3A5E"},
+       {l:"Reuniões",     x:4, y:70, w:44,h:20,c:"#1C3A5E"},
+       {l:"Núcleo Est.",  x:52,y:70, w:44,h:20,c:"#1C3A5E"},
+       {l:"WC ♀",         x:4, y:94, w:44,h:16,c:"#2A9688"},
+       {l:"WC ♂",         x:52,y:94, w:44,h:16,c:"#2A9688"},
+     ],
+     rooms:[
+      {id:"a1",name:"Auditório",ico:"ti-speakerphone",tags:["social","sala"],d:{uso:"Alunos, professores e público externo",ac:"Acessível — rampa de entrada",hr:"Sob agendamento",cap:"~120 pessoas",obs:"Projetor, sistema de som e ar-condicionado"}},
+      {id:"a2",name:"Recepção",ico:"ti-info-circle",tags:["admin"],d:{uso:"Público geral",ac:"Acessível",hr:"07h – 22h",cap:"—",obs:"Ponto de informações e orientação"}},
+      {id:"a3",name:"Secretaria",ico:"ti-file-text",tags:["admin"],d:{uso:"Alunos e colaboradores",ac:"Acessível",hr:"08h – 18h",cap:"—",obs:"Emissão de documentos e históricos"}},
+      {id:"a4",name:"Sala de Matrículas",ico:"ti-clipboard-list",tags:["admin"],d:{uso:"Alunos",ac:"Acessível",hr:"08h – 18h",cap:"—",obs:"Matrícula e rematrícula"}},
+      {id:"a5",name:"Sala de Reuniões",ico:"ti-users",tags:["admin","sala"],d:{uso:"Professores e coordenação",ac:"Acessível",hr:"Sob agendamento",cap:"~15 pessoas",obs:"Mesa de reunião com TV/projetor"}},
+      {id:"a6",name:"Núcleo do Estudante",ico:"ti-heart-handshake",tags:["admin","social"],d:{uso:"Alunos",ac:"Acessível",hr:"08h – 18h",cap:"—",obs:"Apoio psicológico e suporte acadêmico"}},
+      {id:"a7",name:"Banheiro Feminino",ico:"ti-gender-female",tags:["wc"],d:{uso:"Público geral",ac:"Acessível — box PCD",hr:"07h – 22h",cap:"—",obs:""}},
+      {id:"a8",name:"Banheiro Masculino",ico:"ti-gender-male",tags:["wc"],d:{uso:"Público geral",ac:"Acessível — box PCD",hr:"07h – 22h",cap:"—",obs:""}},
+    ]},
+  J:{name:"Bloco J",desc:"Clínicas & Farmácia",
+     svgX:329,svgY:114,svgW:56,svgH:123,
+     mini:[
+       {l:"Farmácia Escola",x:4,y:4,w:92,h:46,c:"#1C3A5E"},
+       {l:"Consultas",      x:4,y:54,w:92,h:44,c:"#254875"},
+     ],
+     rooms:[
+      {id:"j1",name:"Farmácia Escola",ico:"ti-pill",tags:["saude","lab"],d:{uso:"Alunos de farmácia e público externo",ac:"Acessível",hr:"08h – 17h",cap:"—",obs:"Atendimento supervisionado por docentes"}},
+      {id:"j2",name:"Área de Consultas",ico:"ti-stethoscope",tags:["saude"],d:{uso:"Alunos e público externo",ac:"Verificar com coordenação",hr:"Conforme agenda",cap:"—",obs:"Serviços clínicos com supervisão docente"}},
+    ]},
+  B:{name:"Bloco B",desc:"Biblioteca & Secretaria",
+     svgX:257,svgY:263,svgW:59,svgH:164,
+     mini:[
+       {l:"Biblioteca",x:4,y:4, w:92,h:58,c:"#1C3A5E"},
+       {l:"Secretaria",x:4,y:66,w:92,h:28,c:"#254875"},
+     ],
+     rooms:[
+      {id:"b1",name:"Biblioteca",ico:"ti-books",tags:["biblioteca","social"],d:{uso:"Alunos e professores",ac:"Acessível",hr:"08h – 21h30",cap:"~40 pessoas",obs:"Acervo físico e digital. Computadores disponíveis"}},
+      {id:"b2",name:"Secretaria",ico:"ti-file-text",tags:["admin"],d:{uso:"Alunos e colaboradores",ac:"Acessível",hr:"08h – 18h",cap:"—",obs:"Serviços acadêmicos e documentação"}},
+    ]},
+  I:{name:"Bloco I",desc:"Salas de Aula",
+     svgX:320,svgY:263,svgW:65,svgH:145,
+     mini:[
+       {l:"SA-01",x:4,y:4,  w:44,h:20,c:"#1C3A5E"},{l:"SA-02",x:52,y:4,  w:44,h:20,c:"#1C3A5E"},
+       {l:"SA-03",x:4,y:28, w:44,h:20,c:"#1C3A5E"},{l:"SA-04",x:52,y:28, w:44,h:20,c:"#1C3A5E"},
+       {l:"SA-05",x:4,y:52, w:44,h:20,c:"#1C3A5E"},{l:"SA-06",x:52,y:52, w:44,h:20,c:"#254875"},
+       {l:"SA-07",x:4,y:76, w:44,h:20,c:"#1C3A5E"},{l:"SA-08",x:52,y:76, w:44,h:20,c:"#254875"},
+       {l:"SA-09",x:4,y:100,w:44,h:20,c:"#1C3A5E"},
+       {l:"WC ♀", x:4,y:124,w:44,h:16,c:"#2A9688"},{l:"WC ♂",x:52,y:124,w:44,h:16,c:"#2A9688"},
+     ],
+     rooms:[
+      {id:"i1",name:"Sala de Aula 01",ico:"ti-school",tags:["sala"],d:{uso:"Alunos e professores",ac:"Acessível",hr:"07h – 22h",cap:"~45 alunos",obs:"Projetor e quadro branco"}},
+      {id:"i2",name:"Sala de Aula 02",ico:"ti-school",tags:["sala"],d:{uso:"Alunos e professores",ac:"Acessível",hr:"07h – 22h",cap:"~45 alunos",obs:""}},
+      {id:"i3",name:"Sala de Aula 03",ico:"ti-school",tags:["sala"],d:{uso:"Alunos e professores",ac:"Acessível",hr:"07h – 22h",cap:"~45 alunos",obs:""}},
+      {id:"i4",name:"Sala de Aula 04",ico:"ti-school",tags:["sala"],d:{uso:"Alunos e professores",ac:"Acessível",hr:"07h – 22h",cap:"~45 alunos",obs:""}},
+      {id:"i5",name:"Sala de Aula 05",ico:"ti-school",tags:["sala"],d:{uso:"Alunos e professores",ac:"Acessível",hr:"07h – 22h",cap:"~45 alunos",obs:""}},
+      {id:"i6",name:"Sala de Aula 06",ico:"ti-school",tags:["sala"],d:{uso:"Alunos e professores",ac:"Acessível",hr:"07h – 22h",cap:"~45 alunos",obs:""}},
+      {id:"i7",name:"Sala de Aula 07",ico:"ti-school",tags:["sala"],d:{uso:"Alunos e professores",ac:"Acessível",hr:"07h – 22h",cap:"~45 alunos",obs:""}},
+      {id:"i8",name:"Sala de Aula 08",ico:"ti-school",tags:["sala"],d:{uso:"Alunos e professores",ac:"Acessível",hr:"07h – 22h",cap:"~45 alunos",obs:""}},
+      {id:"i9",name:"Sala de Aula 09",ico:"ti-school",tags:["sala"],d:{uso:"Alunos e professores",ac:"Acessível",hr:"07h – 22h",cap:"~45 alunos",obs:""}},
+      {id:"i10",name:"Banheiro Feminino",ico:"ti-gender-female",tags:["wc"],d:{uso:"Público geral",ac:"Acessível — box PCD",hr:"07h – 22h",cap:"—",obs:""}},
+      {id:"i11",name:"Banheiro Masculino",ico:"ti-gender-male",tags:["wc"],d:{uso:"Público geral",ac:"Acessível — box PCD",hr:"07h – 22h",cap:"—",obs:""}},
+    ]},
+  K:{name:"Bloco K",desc:"Centro Acad. Farmácia",
+     svgX:411,svgY:316,svgW:59,svgH:50,
+     mini:[
+       {l:"C.A. Farmácia",x:4,y:4, w:92,h:28,c:"#1C3A5E"},
+       {l:"Sala de Aula", x:4,y:36,w:56,h:24,c:"#254875"},
+       {l:"Lab.",         x:64,y:36,w:32,h:24,c:"#2A9688"},
+     ],
+     rooms:[
+      {id:"k1",name:"Centro Acadêmico de Farmácia",ico:"ti-users",tags:["admin","social"],d:{uso:"Alunos de farmácia",ac:"Verificar",hr:"Variável",cap:"—",obs:"Espaço de organização estudantil"}},
+      {id:"k2",name:"Sala de Aula",ico:"ti-school",tags:["sala"],d:{uso:"Alunos e professores",ac:"Acessível",hr:"Conforme grade",cap:"~35 alunos",obs:""}},
+      {id:"k3",name:"Laboratório",ico:"ti-microscope",tags:["lab"],d:{uso:"Alunos de farmácia",ac:"Verificar",hr:"Conforme grade",cap:"~20 alunos",obs:"EPI obrigatório"}},
+    ]},
+  D:{name:"Bloco D",desc:"Lab. Veterinária",
+     svgX:469,svgY:275,svgW:75,svgH:91,
+     mini:[
+       {l:"Lab. Veterinária",x:4,y:4, w:92,h:50,c:"#1C3A5E"},
+       {l:"WC ♀",            x:4,y:58,w:44,h:18,c:"#2A9688"},
+       {l:"WC ♂",            x:52,y:58,w:44,h:18,c:"#2A9688"},
+     ],
+     rooms:[
+      {id:"d1",name:"Laboratório de Veterinária",ico:"ti-microscope",tags:["lab","saude"],d:{uso:"Alunos de medicina veterinária",ac:"Verificar com coordenação",hr:"Conforme grade",cap:"~20 alunos",obs:"EPI obrigatório. Supervisão de professor"}},
+      {id:"d2",name:"Banheiro Feminino",ico:"ti-gender-female",tags:["wc"],d:{uso:"Público geral",ac:"Acessível",hr:"07h – 22h",cap:"—",obs:""}},
+      {id:"d3",name:"Banheiro Masculino",ico:"ti-gender-male",tags:["wc"],d:{uso:"Público geral",ac:"Acessível",hr:"07h – 22h",cap:"—",obs:""}},
+    ]},
+  H:{name:"Bloco H",desc:"Labs de Informática",
+     svgX:620,svgY:252,svgW:107,svgH:61,
+     mini:[
+       {l:"Lab Info. 1",x:4, y:4,w:44,h:80,c:"#1C3A5E"},
+       {l:"Lab Info. 2",x:52,y:4,w:44,h:80,c:"#254875"},
+     ],
+     rooms:[
+      {id:"h1",name:"Lab de Informática 1",ico:"ti-device-laptop",tags:["informatica","lab","sala"],d:{uso:"Alunos",ac:"Acessível",hr:"Conforme grade",cap:"~30 computadores",obs:"Windows 11, softwares de engenharia e gestão"}},
+      {id:"h2",name:"Lab de Informática 2",ico:"ti-device-laptop",tags:["informatica","lab","sala"],d:{uso:"Alunos",ac:"Acessível",hr:"Conforme grade",cap:"~30 computadores",obs:"Windows 11, softwares de engenharia e gestão"}},
+    ]},
+  C:{name:"Bloco C",desc:"Em cadastramento",
+     svgX:253,svgY:498,svgW:84,svgH:94,
+     mini:[{l:"Em cadastramento",x:4,y:4,w:92,h:80,c:"#6B7280"}],
+     rooms:[{id:"c1",name:"Ambientes em cadastramento",ico:"ti-info-circle",tags:["admin"],d:{uso:"—",ac:"—",hr:"—",cap:"—",obs:"Informações em breve"}}]},
+  F:{name:"Bloco F",desc:"Laboratórios",
+     svgX:624,svgY:396,svgW:68,svgH:83,
+     mini:[
+       {l:"Lab 1",x:4, y:4, w:44,h:52,c:"#1C3A5E"},
+       {l:"Lab 2",x:52,y:4, w:44,h:52,c:"#254875"},
+       {l:"WC ♀", x:4, y:60,w:44,h:18,c:"#2A9688"},
+       {l:"WC ♂", x:52,y:60,w:44,h:18,c:"#2A9688"},
+     ],
+     rooms:[
+      {id:"f1",name:"Laboratório 1",ico:"ti-microscope",tags:["lab"],d:{uso:"Alunos",ac:"Verificar",hr:"Conforme grade",cap:"~25 alunos",obs:""}},
+      {id:"f2",name:"Laboratório 2",ico:"ti-microscope",tags:["lab"],d:{uso:"Alunos",ac:"Verificar",hr:"Conforme grade",cap:"~25 alunos",obs:""}},
+      {id:"f3",name:"Banheiro Feminino",ico:"ti-gender-female",tags:["wc"],d:{uso:"Público geral",ac:"Acessível",hr:"07h – 22h",cap:"—",obs:""}},
+      {id:"f4",name:"Banheiro Masculino",ico:"ti-gender-male",tags:["wc"],d:{uso:"Público geral",ac:"Acessível",hr:"07h – 22h",cap:"—",obs:""}},
+    ]},
+  E:{name:"Bloco E",desc:"Em cadastramento",
+     svgX:335,svgY:499,svgW:41,svgH:94,
+     mini:[{l:"Em cadastramento",x:4,y:4,w:92,h:80,c:"#6B7280"}],
+     rooms:[{id:"e1",name:"Ambientes em cadastramento",ico:"ti-info-circle",tags:["admin"],d:{uso:"—",ac:"—",hr:"—",cap:"—",obs:"Informações em breve"}}]},
+  G:{name:"Bloco G",desc:"Em cadastramento",
+     svgX:638,svgY:515,svgW:33,svgH:68,
+     mini:[{l:"Em cadastramento",x:4,y:4,w:92,h:80,c:"#6B7280"}],
+     rooms:[{id:"g1",name:"Ambientes em cadastramento",ico:"ti-info-circle",tags:["admin"],d:{uso:"—",ac:"—",hr:"—",cap:"—",obs:"Informações em breve"}}]},
+};
+
+/* ── STATE ── */
+let aFilter="all", selBlock=null, openRoom=null, searchQ="";
+let scale=1, px=0, py=0;
+const TAG_LABELS={sala:"Sala de Aula",lab:"Laboratório",admin:"Administrativo",wc:"Banheiro",social:"Social/Lazer",biblioteca:"Biblioteca",saude:"Saúde",informatica:"Informática"};
+const TAG_ORDER=["sala","informatica","lab","biblioteca","saude","admin","social","wc"];
+function tLbl(t){return TAG_LABELS[t]||t;}
+function tClass(t){return `tag tag-${t}`;}
+function rVis(r){return(aFilter==="all"||r.tags.includes(aFilter))&&(!searchQ||r.name.toLowerCase().includes(searchQ.toLowerCase()));}
+
+/* ── SEARCH DROPDOWN ── */
+function buildDrop(q){
+  const dr=document.getElementById("searchDrop");
+  if(!q){dr.classList.remove("show");dr.innerHTML="";return;}
+  const hits=[];
+  Object.entries(BLOCKS).forEach(([k,b])=>{
+    if(b.name.toLowerCase().includes(q.toLowerCase())||b.desc.toLowerCase().includes(q.toLowerCase()))
+      hits.unshift({k,b,r:null});
+    b.rooms.forEach(r=>{if(r.name.toLowerCase().includes(q.toLowerCase()))hits.push({k,b,r});});
+  });
+  const top=[...new Map(hits.map(h=>[h.k+(h.r?h.r.id:""),h])).values()].slice(0,3);
+  if(!top.length){dr.classList.remove("show");return;}
+  dr.innerHTML=top.map(h=>`<div class="sd-item" data-bk="${h.k}" data-rid="${h.r?h.r.id:""}">
+    <div class="sd-badge">${h.k}</div>
+    <div style="flex:1;min-width:0"><div class="sd-name">${h.r?h.r.name:h.b.name}</div><div class="sd-sub">${h.b.name}</div></div>
+    <span class="sd-tag ${tClass(h.r?h.r.tags[0]:"admin")}">${tLbl(h.r?h.r.tags[0]:"admin")}</span>
+  </div>`).join("");
+  dr.classList.add("show");
+  dr.querySelectorAll(".sd-item").forEach(el=>{
+    el.addEventListener("click",()=>{
+      openBlock(el.dataset.bk);
+      if(el.dataset.rid)setTimeout(()=>openRoomById(el.dataset.rid),220);
+      dr.classList.remove("show");
+      document.getElementById("searchInput").value="";
+      searchQ="";closeMobile();
+    });
+  });
+}
+function openRoomById(rid){const c=document.getElementById("rc-"+rid);if(c){c.click();c.scrollIntoView({behavior:"smooth",block:"nearest"});}}
+
+/* ── SIDEBAR ── */
+function renderList(){
+  const el=document.getElementById("blocksList");
+  el.innerHTML="";
+  Object.entries(BLOCKS).forEach(([k,b])=>{
+    const vis=b.rooms.filter(rVis);
+    if((aFilter!=="all"||searchQ)&&vis.length===0)return;
+    const d=document.createElement("div");
+    d.className="brow"+(selBlock===k?" sel":"");
+    d.innerHTML=`<div class="brow-badge">${k}</div>
+      <div class="brow-info"><div class="brow-name">${b.name}</div><div class="brow-ct">${vis.length} ambiente${vis.length!==1?"s":""}</div></div>
+      <i class="ti ti-chevron-right brow-arr"></i>`;
+    d.addEventListener("click",()=>{openBlock(k);closeMobile();});
+    el.appendChild(d);
+  });
+  if(!el.children.length)el.innerHTML=`<div class="side-nores">Nenhum resultado.</div>`;
+}
+
+/* ── MAP ── */
+function renderMap(){
+  const c=document.getElementById("mapBlocks");
+  c.innerHTML="";
+  const mw=document.getElementById("mapWrap");
+  const dpW=selBlock&&window.innerWidth>720?296:0;
+  const sw=Math.max(mw.clientWidth-dpW,200);
+  const sh=Math.max(mw.clientHeight,200);
+  const sx=sw/VW, sy=sh/VH;
+
+  Object.entries(BLOCKS).forEach(([k,b])=>{
+    const hasMatch=b.rooms.some(rVis);
+    const dim=(aFilter!=="all"||searchQ)&&!hasMatch;
+    const bw=Math.round(b.svgW*sx);
+    const bh=Math.round(b.svgH*sy);
+    const fs=Math.max(8,Math.min(13,12*Math.min(sx,sy)));
+    const div=document.createElement("div");
+    div.className="mb"+(selBlock===k?" sel":"")+(dim?" dim":"");
+    // size the outer div so it doesn't stretch — label uses absolute positioning
+    div.style.cssText=`left:${Math.round(b.svgX*sx)}px;top:${Math.round(b.svgY*sy)}px;width:${bw}px;height:${bh}px;pointer-events:all`;
+    div.innerHTML=
+      `<div class="mb-box" style="width:${bw}px;height:${bh}px;font-size:${fs}px">${k}</div>`+
+      `<div class="mb-lbl" style="top:${bh+3}px">${b.name}</div>`;
+    div.addEventListener("click",()=>openBlock(k));
+    c.appendChild(div);
+  });
+}
+
+/* ── MINI MAP ── */
+function renderMini(k){
+  const b=BLOCKS[k];
+  const el=document.getElementById("miniMapArea");
+  if(!b.mini||!b.mini.length){el.innerHTML="";return;}
+  const mh=Math.max(...b.mini.map(r=>r.y+r.h))+14;
+  const rs=b.mini.map(r=>`
+    <rect x="${r.x}%" y="${r.y+4}" width="${r.w}%" height="${r.h-2}" rx="3" fill="${r.c}" opacity=".86"/>
+    <text x="${r.x+r.w/2}%" y="${r.y+4+r.h/2+3.5}" text-anchor="middle" font-size="7.5" fill="#fff" font-family="DM Sans,sans-serif">${r.l}</text>
+  `).join("");
+  el.innerHTML=`<div class="mini-map"><svg viewBox="0 0 100 ${mh}" style="height:${Math.min(mh*2,170)}px;width:100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <rect width="100" height="${mh}" fill="#DFF0C0"/>
+    ${rs}
+    <text x="50" y="${mh-2}" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif">${b.name} — planta esquemática</text>
+  </svg></div>`;
+}
+
+/* ── OPEN BLOCK ── */
+function openBlock(k){
+  selBlock=k;openRoom=null;
+  const b=BLOCKS[k];
+  document.getElementById("detEm").textContent=k;
+  document.getElementById("detTitle").textContent=b.name;
+  const vis=b.rooms.filter(rVis);
+  document.getElementById("detSub").textContent=b.desc+" · "+vis.length+" ambiente"+(vis.length!==1?"s":"");
+  renderDetailBody(k,vis);renderMini(k);
+  document.getElementById("detPanel").classList.add("open");
+  renderList();renderMap();
+}
+
+/* ── DETAIL BODY ── */
+function renderDetailBody(k,rooms){
+  const el=document.getElementById("detBody");
+  if(!rooms.length){el.innerHTML=`<div class="no-res">Nenhum ambiente para este filtro.</div>`;return;}
+  const groups={};
+  rooms.forEach(r=>{const pt=TAG_ORDER.find(t=>r.tags.includes(t))||"admin";(groups[pt]=groups[pt]||[]).push(r);});
+  let html="";
+  TAG_ORDER.forEach(t=>{
+    if(!groups[t])return;
+    html+=`<div class="sec-lbl">${tLbl(t)}</div>`;
+    groups[t].forEach(r=>{
+      const isOpen=openRoom===r.id;
+      html+=`<div class="rcard${isOpen?" open":""}" id="rc-${r.id}">
+        <div class="rc-top" onclick="toggleRoom('${k}','${r.id}')">
+          <i class="ti ${r.ico} rc-ico"></i><span class="rc-name">${r.name}</span>
+          <i class="ti ti-chevron-right rc-arr"></i>
+        </div>
+        <div class="rc-tags">${r.tags.map(tg=>`<span class="${tClass(tg)}">${tLbl(tg)}</span>`).join("")}</div>
+        <div class="rcard-detail">
+          <div class="rcd-row"><i class="ti ti-users"></i><span class="rcd-lbl">Quem usa</span><span class="rcd-val">${r.d.uso}</span></div>
+          <div class="rcd-row"><i class="ti ti-wheelchair"></i><span class="rcd-lbl">Acesso</span><span class="rcd-val">${r.d.ac}</span></div>
+          <div class="rcd-row"><i class="ti ti-clock"></i><span class="rcd-lbl">Horário</span><span class="rcd-val">${r.d.hr}</span></div>
+          <div class="rcd-row"><i class="ti ti-maximize"></i><span class="rcd-lbl">Capacidade</span><span class="rcd-val">${r.d.cap}</span></div>
+          ${r.d.obs?`<div class="rcd-row"><i class="ti ti-notes"></i><span class="rcd-lbl">Obs.</span><span class="rcd-val">${r.d.obs}</span></div>`:""}
+        </div>
+      </div>`;
+    });
+  });
+  el.innerHTML=html;
+}
+
+function toggleRoom(k,id){
+  openRoom=openRoom===id?null:id;
+  renderDetailBody(k,BLOCKS[k].rooms.filter(rVis));
+  if(openRoom){const c=document.getElementById("rc-"+openRoom);if(c)c.scrollIntoView({behavior:"smooth",block:"nearest"});}
+}
+
+/* ── CLOSE DETAIL ── */
+document.getElementById("detClose").addEventListener("click",()=>{
+  document.getElementById("detPanel").classList.remove("open");
+  selBlock=null;openRoom=null;renderList();renderMap();
+});
+
+/* ── FILTERS ── */
+document.getElementById("filtersRow").addEventListener("click",e=>{
+  const ch=e.target.closest("[data-f]");if(!ch)return;
+  aFilter=ch.dataset.f;openRoom=null;
+  document.querySelectorAll("[data-f]").forEach(c=>{c.className="chip"});
+  ch.className="chip "+(aFilter==="all"?"on-dk":"on");
+  if(selBlock)openBlock(selBlock);else{renderList();renderMap();}
+});
+
+/* ── SEARCH ── */
+document.getElementById("searchInput").addEventListener("input",e=>{
+  searchQ=e.target.value.trim();openRoom=null;
+  buildDrop(searchQ);
+  if(selBlock)openBlock(selBlock);else{renderList();renderMap();}
+});
+document.addEventListener("click",e=>{
+  if(!e.target.closest(".bar-sw"))document.getElementById("searchDrop").classList.remove("show");
+});
+
+/* ── MOBILE ── */
+function closeMobile(){document.getElementById("sidebar").classList.remove("open");document.getElementById("backdrop").classList.remove("show");}
+document.getElementById("menuBtn").addEventListener("click",()=>{
+  const s=document.getElementById("sidebar"),o=s.classList.toggle("open");
+  document.getElementById("backdrop").classList.toggle("show",o);
+});
+document.getElementById("backdrop").addEventListener("click",closeMobile);
+
+/* ── ZOOM / PAN ── */
+const inner=document.getElementById("mapInner");
+function applyT(){inner.style.transform=`translate(${px}px,${py}px) scale(${scale})`;}
+document.getElementById("zIn").addEventListener("click",()=>{scale=Math.min(scale*1.3,5);applyT();});
+document.getElementById("zOut").addEventListener("click",()=>{scale=Math.max(scale/1.3,.3);applyT();});
+document.getElementById("zReset").addEventListener("click",()=>{scale=1;px=0;py=0;applyT();});
+let md=false,ms={x:0,y:0},mp={x:0,y:0};
+document.getElementById("mapWrap").addEventListener("mousedown",e=>{
+  if(e.target.closest(".mb")||e.target.closest(".detail"))return;
+  md=true;ms={x:e.clientX,y:e.clientY};mp={x:px,y:py};
+});
+document.addEventListener("mousemove",e=>{if(!md)return;px=mp.x+(e.clientX-ms.x);py=mp.y+(e.clientY-ms.y);applyT();});
+document.addEventListener("mouseup",()=>{md=false;});
+let ts=null,tp={x:0,y:0};
+document.getElementById("mapWrap").addEventListener("touchstart",e=>{
+  if(e.touches.length===1&&!e.target.closest(".mb")){ts=e.touches[0];tp={x:px,y:py};}
+},{passive:true});
+document.getElementById("mapWrap").addEventListener("touchmove",e=>{
+  if(e.touches.length===1&&ts){px=tp.x+(e.touches[0].clientX-ts.clientX);py=tp.y+(e.touches[0].clientY-ts.clientY);applyT();}
+},{passive:true});
+new ResizeObserver(()=>renderMap()).observe(document.getElementById("mapWrap"));
+
+renderList();renderMap();
+</script>
+</body>
+</html>
