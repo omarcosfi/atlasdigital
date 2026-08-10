@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Estúdio Firex – デザインスタジオ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Noto+Sans+JP:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════
+   BASE
+═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --azul:#00AEEF;
+  --azul2:#3FC4FF;
+  --rosa:#F5A1C7;
+  --vermelho:#E8272B;
+  --preto:#0D0D12;
+  --branco:#FFFFFF;
+  --glass:rgba(255,255,255,0.06);
+  --glass-border:rgba(255,255,255,0.12);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--preto);
+  color:var(--branco);
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ═══ CUSTOM CURSOR ═══ */
+#cursor{
+  width:12px;height:12px;
+  background:var(--azul);
+  border-radius:50%;
+  position:fixed;top:0;left:0;
+  pointer-events:none;z-index:99999;
+  transform:translate(-50%,-50%);
+  transition:transform .1s,width .3s,height .3s,background .3s;
+  mix-blend-mode:screen;
+}
+#cursor-ring{
+  width:36px;height:36px;
+  border:1.5px solid rgba(0,174,239,0.5);
+  border-radius:50%;
+  position:fixed;top:0;left:0;
+  pointer-events:none;z-index:99998;
+  transform:translate(-50%,-50%);
+  transition:transform .12s ease-out,width .3s,height .3s;
+}
+body:hover #cursor{opacity:1}
+
+/* ═══ LOADING SCREEN ═══ */
+#loader{
+  position:fixed;inset:0;z-index:99990;
+  background:var(--preto);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .8s ease,visibility .8s;
+}
+#loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.loader-logo{
+  font-family:'Nunito',sans-serif;font-weight:900;font-size:3rem;
+  color:var(--branco);letter-spacing:-2px;
+  position:relative;overflow:hidden;
+}
+.loader-logo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(0,174,239,.6),transparent);
+  animation:shimmer 1.5s infinite;
+}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.loader-jp{
+  font-family:'Noto Sans JP',sans-serif;font-size:.75rem;
+  color:var(--azul);letter-spacing:4px;margin-top:6px;opacity:.7;
+}
+.loader-bar{
+  width:200px;height:2px;background:rgba(255,255,255,.1);
+  margin-top:32px;border-radius:2px;overflow:hidden;
+}
+.loader-bar-fill{
+  height:100%;background:linear-gradient(90deg,var(--azul),var(--rosa));
+  border-radius:2px;width:0;
+  animation:loadfill 1.8s ease forwards;
+}
+@keyframes loadfill{to{width:100%}}
+
+/* ═══ CANVAS PARTICLES ═══ */
+#particle-canvas{
+  position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.45;
+}
+
+/* ═══ NOISE OVERLAY ═══ */
+#noise{
+  position:fixed;inset:0;pointer-events:none;z-index:1;
+  opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ═══ NAV ═══ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:0 60px;height:70px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all .4s;
+}
+nav.scrolled{
+  background:rgba(13,13,18,.85);
+  border-bottom:1px solid var(--glass-border);
+  backdrop-filter:blur(20px);
+}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-icon{
+  width:38px;height:38px;border-radius:9px;
+  background:linear-gradient(135deg,var(--azul),var(--azul2));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 20px rgba(0,174,239,.4);
+}
+.nav-icon svg{width:22px;height:22px}
+.nav-wordmark{line-height:1}
+.nav-wordmark b{
+  font-family:'Nunito',sans-serif;font-weight:900;
+  font-size:1.1rem;color:var(--branco);letter-spacing:-.3px;
+  display:block;
+}
+.nav-wordmark small{
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:.5rem;color:var(--azul);letter-spacing:2px;opacity:.8;
+}
+.nav-links{display:flex;gap:32px}
+.nav-links a{
+  font-size:.8rem;font-weight:600;color:rgba(255,255,255,.6);
+  text-decoration:none;letter-spacing:.5px;
+  transition:color .2s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;
+  width:0;height:1px;background:var(--azul);
+  transition:width .3s;
+}
+.nav-links a:hover{color:var(--branco)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{
+  background:transparent;border:1px solid var(--azul);
+  color:var(--azul);padding:9px 20px;border-radius:40px;
+  font-size:.78rem;font-weight:700;text-decoration:none;
+  transition:all .25s;letter-spacing:.5px;
+  position:relative;overflow:hidden;
+}
+.nav-cta::before{
+  content:'';position:absolute;inset:0;
+  background:var(--azul);transform:translateX(-100%);
+  transition:transform .3s;z-index:-1;
+}
+.nav-cta:hover{color:var(--preto)}
+.nav-cta:hover::before{transform:translateX(0)}
+
+/* ═══ HERO ═══ */
+#hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  position:relative;overflow:hidden;
+  padding:70px 60px 0;
+}
+
+/* Animated gradient aurora */
+.aurora{
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:
+    radial-gradient(ellipse 70% 60% at 70% 30%, rgba(0,174,239,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(245,161,199,.1) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 85% 75%, rgba(232,39,43,.06) 0%, transparent 50%);
+  animation:auroraShift 10s ease-in-out infinite alternate;
+}
+@keyframes auroraShift{
+  0%{opacity:.7;filter:hue-rotate(0deg)}
+  50%{opacity:1;filter:hue-rotate(20deg)}
+  100%{opacity:.7;filter:hue-rotate(-10deg)}
+}
+
+/* Grid lines bg */
+.grid-bg{
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+  background-image:
+    linear-gradient(rgba(0,174,239,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,174,239,.04) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent);
+}
+
+.hero-inner{
+  position:relative;z-index:3;
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;
+  align-items:center;width:100%;
+  padding:60px 0;
+}
+
+/* Left side */
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid rgba(0,174,239,.3);
+  background:rgba(0,174,239,.07);
+  border-radius:40px;padding:5px 16px;
+  font-size:.7rem;font-weight:700;color:var(--azul);
+  letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:24px;
+}
+.dot-live{width:6px;height:6px;border-radius:50%;background:var(--azul);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,174,239,.4)}50%{opacity:.3;box-shadow:0 0 0 6px rgba(0,174,239,0)}}
+
+.hero-h1{
+  font-family:'Nunito',sans-serif;
+  font-size:clamp(2.8rem,5vw,5.2rem);
+  font-weight:900;line-height:1;
+  letter-spacing:-2px;margin-bottom:24px;
+  overflow:hidden;
+}
+.h1-line{
+  display:block;overflow:hidden;
+}
+.h1-line span{
+  display:block;
+  transform:translateY(110%);
+  animation:slideUp .9s cubic-bezier(.22,1,.36,1) forwards;
+}
+.h1-line:nth-child(1) span{animation-delay:.2s}
+.h1-line:nth-child(2) span{animation-delay:.35s}
+.h1-line:nth-child(3) span{animation-delay:.5s}
+@keyframes slideUp{to{transform:translateY(0)}}
+
+.h1-white{color:var(--branco)}
+.h1-blue{
+  color:transparent;
+  background:linear-gradient(90deg,var(--azul),var(--azul2));
+  -webkit-background-clip:text;background-clip:text;
+}
+.h1-pink{color:var(--rosa)}
+.h1-red{color:var(--vermelho)}
+
+.hero-desc{
+  font-size:1rem;line-height:1.8;
+  color:rgba(255,255,255,.55);
+  max-width:440px;margin-bottom:12px;
+  animation:fadeIn .8s .7s both;
+}
+.hero-jp-line{
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:.72rem;color:var(--azul);letter-spacing:3px;
+  opacity:.6;margin-bottom:36px;
+  animation:fadeIn .8s .8s both;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.hero-btns{
+  display:flex;gap:14px;flex-wrap:wrap;
+  animation:fadeIn .8s .9s both;
+}
+.btn-glow{
+  background:var(--azul);color:var(--preto);
+  padding:14px 28px;border-radius:40px;
+  font-weight:700;font-size:.9rem;text-decoration:none;
+  position:relative;overflow:hidden;
+  box-shadow:0 0 30px rgba(0,174,239,.35),0 0 60px rgba(0,174,239,.12);
+  transition:all .3s;
+  display:flex;align-items:center;gap:8px;
+}
+.btn-glow::before{
+  content:'';position:absolute;inset:-1px;
+  background:conic-gradient(from 0deg,var(--azul),var(--rosa),var(--azul2),var(--azul));
+  border-radius:40px;z-index:-1;
+  animation:spinBorder 3s linear infinite;
+  opacity:0;transition:opacity .3s;
+}
+.btn-glow:hover::before{opacity:1}
+.btn-glow:hover{transform:translateY(-3px);box-shadow:0 0 40px rgba(0,174,239,.5),0 0 80px rgba(0,174,239,.2)}
+@keyframes spinBorder{to{transform:rotate(360deg)}}
+
+.btn-outline{
+  background:transparent;color:var(--branco);
+  padding:14px 28px;border-radius:40px;
+  font-weight:600;font-size:.9rem;text-decoration:none;
+  border:1px solid rgba(255,255,255,.15);
+  transition:all .3s;
+  display:flex;align-items:center;gap:8px;
+}
+.btn-outline:hover{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.05);transform:translateY(-3px)}
+
+/* Stats row */
+.hero-stats{
+  display:flex;gap:40px;margin-top:48px;
+  padding-top:32px;border-top:1px solid rgba(255,255,255,.06);
+  animation:fadeIn .8s 1.1s both;
+}
+.stat-num{
+  font-family:'Nunito',sans-serif;font-weight:900;
+  font-size:2rem;color:var(--branco);
+  display:block;line-height:1;
+}
+.stat-lbl{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:4px;letter-spacing:.5px}
+
+/* ═══ HERO VISUAL – Brand card 3D ═══ */
+.hero-visual{
+  position:relative;display:flex;
+  align-items:center;justify-content:center;
+  animation:fadeIn .8s .4s both;
+}
+
+/* Main card */
+.hv-card{
+  width:100%;max-width:480px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:28px;
+  padding:40px 36px 36px;
+  position:relative;
+  backdrop-filter:blur(20px);
+  box-shadow:
+    0 0 0 1px rgba(0,174,239,.1),
+    0 40px 80px rgba(0,0,0,.6),
+    inset 0 1px 0 rgba(255,255,255,.1);
+  transform-style:preserve-3d;
+  transition:transform .1s;
+}
+
+/* Glowing border animation */
+.hv-card::before{
+  content:'';position:absolute;inset:-1px;border-radius:29px;
+  background:linear-gradient(135deg,rgba(0,174,239,.4),transparent 40%,rgba(245,161,199,.3) 70%,transparent);
+  z-index:-1;animation:borderGlow 4s linear infinite;
+}
+@keyframes borderGlow{
+  0%,100%{opacity:.5}
+  50%{opacity:1}
+}
+
+/* Logo inside card */
+.hv-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.hv-icon{
+  width:48px;height:48px;border-radius:12px;
+  background:linear-gradient(135deg,var(--azul),var(--azul2));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 24px rgba(0,174,239,.5);
+}
+.hv-icon svg{width:28px;height:28px}
+.hv-brand-text b{
+  font-family:'Nunito',sans-serif;font-weight:900;
+  font-size:1.6rem;color:var(--branco);
+  letter-spacing:-1px;display:block;line-height:1;
+}
+.hv-brand-text small{
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:.55rem;color:var(--azul);letter-spacing:2px;
+}
+
+/* Wave decoration inside */
+.hv-waves{margin-bottom:24px;position:relative;overflow:hidden;border-radius:16px;height:90px}
+.hv-waves svg{position:absolute;bottom:0;width:100%}
+.hv-waves-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(0,174,239,.08),rgba(245,161,199,.08));
+}
+.wave-anim{animation:waveFlow 4s ease-in-out infinite}
+.wave-anim2{animation:waveFlow 5s ease-in-out infinite reverse}
+@keyframes waveFlow{
+  0%,100%{transform:translateX(0)}
+  50%{transform:translateX(-20px)}
+}
+.star-anim{
+  position:absolute;
+  animation:twinkleCard 2.5s ease-in-out infinite;
+}
+@keyframes twinkleCard{
+  0%,100%{opacity:.3;transform:scale(.7) rotate(0deg)}
+  50%{opacity:1;transform:scale(1.2) rotate(20deg)}
+}
+
+/* Tagline */
+.hv-tagline{
+  font-family:'Nunito',sans-serif;font-weight:800;
+  font-size:1.25rem;color:var(--branco);
+  line-height:1.3;margin-bottom:24px;
+}
+.hv-tagline .t-blue{color:var(--azul)}
+.hv-tagline .t-pink{color:var(--rosa)}
+
+/* Mockup row */
+.hv-mockups{display:flex;gap:10px}
+.hv-mock{
+  flex:1;height:72px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;position:relative;overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+}
+.hv-mock::before{content:'';position:absolute;inset:0;opacity:.5}
+.m-blue::before{background:linear-gradient(135deg,var(--azul),var(--azul2))}
+.m-pink::before{background:linear-gradient(135deg,var(--rosa),#f0b8ce)}
+.m-dark::before{background:linear-gradient(135deg,#1a1a2e,#16213e)}
+
+/* Floating mini cards */
+.fc{
+  position:absolute;
+  background:rgba(13,13,18,.9);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:10px 16px;
+  backdrop-filter:blur(12px);
+  font-size:11px;font-weight:700;color:var(--branco);
+  white-space:nowrap;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+.fc-dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:6px}
+.fc1{top:-16px;right:-20px;animation:floatFC 5s ease-in-out infinite}
+.fc2{bottom:60px;left:-24px;animation:floatFC 6s ease-in-out infinite .8s}
+.fc3{bottom:-14px;right:24px;animation:floatFC 4.5s ease-in-out infinite 1.5s}
+@keyframes floatFC{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+.fc span{display:block;font-size:9px;color:rgba(255,255,255,.4);font-weight:400;margin-top:2px}
+
+/* Orbit ring */
+.orbit{
+  position:absolute;border-radius:50%;
+  border:1px dashed rgba(0,174,239,.15);
+  pointer-events:none;
+}
+.orbit1{
+  width:560px;height:560px;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:spinOrbit 25s linear infinite;
+}
+.orbit2{
+  width:680px;height:680px;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:spinOrbit 35s linear infinite reverse;
+}
+@keyframes spinOrbit{
+  from{transform:translate(-50%,-50%) rotate(0deg)}
+  to{transform:translate(-50%,-50%) rotate(360deg)}
+}
+.orbit-dot{
+  position:absolute;width:8px;height:8px;
+  border-radius:50%;top:0;left:50%;
+  transform:translate(-50%,-50%);
+}
+.od1{background:var(--azul);box-shadow:0 0 10px var(--azul)}
+.od2{background:var(--rosa);box-shadow:0 0 10px var(--rosa)}
+
+/* Scroll hint */
+.scroll-hint{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-size:.65rem;color:rgba(255,255,255,.3);letter-spacing:2px;
+  animation:fadeIn 1s 1.5s both;
+}
+.scroll-line{
+  width:1px;height:48px;
+  background:linear-gradient(to bottom,rgba(0,174,239,.5),transparent);
+  animation:scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(.8)}50%{opacity:1;transform:scaleY(1)}}
+
+/* ═══════════════════════
+   SECTION SHARED
+═══════════════════════ */
+.section{padding:120px 60px;position:relative}
+.section-inner{max-width:1280px;margin:0 auto}
+.s-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.65rem;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;
+  color:var(--azul);margin-bottom:14px;
+}
+.s-eyebrow-line{width:24px;height:1px;background:var(--azul);opacity:.6}
+.s-title{
+  font-family:'Nunito',sans-serif;font-weight:900;
+  font-size:clamp(2rem,4vw,3.2rem);
+  color:var(--branco);line-height:1.1;letter-spacing:-1px;
+}
+.s-sub{
+  font-size:.95rem;line-height:1.8;
+  color:rgba(255,255,255,.45);
+  margin-top:16px;max-width:520px;
+}
+
+/* reveal */
+.reveal{
+  opacity:0;transform:translateY(40px);
+  transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
+}
+.reveal.rl{transform:translateX(-40px)}
+.reveal.rr{transform:translateX(40px)}
+.reveal.vis{opacity:1;transform:none}
+
+/* ═══ SERVIÇOS ═══ */
+#servicos{background:var(--preto)}
+#servicos::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 60% at 50% 0%,rgba(0,174,239,.05),transparent);
+  pointer-events:none;
+}
+
+.sv-header{text-align:center;margin-bottom:72px}
+.sv-header .s-sub{margin:0 auto;text-align:center}
+
+.sv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.05);border-radius:24px;overflow:hidden}
+
+.sv-card{
+  background:rgba(255,255,255,.02);
+  padding:48px 36px;position:relative;
+  transition:background .3s;overflow:hidden;
+}
+.sv-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--azul),transparent);
+  transform:scaleX(0);transition:transform .5s;
+}
+.sv-card:nth-child(2)::before{background:linear-gradient(90deg,transparent,var(--rosa),transparent)}
+.sv-card:nth-child(3)::before{background:linear-gradient(90deg,transparent,var(--vermelho),transparent)}
+.sv-card:hover{background:rgba(255,255,255,.04)}
+.sv-card:hover::before{transform:scaleX(1)}
+
+/* Glow on hover */
+.sv-card:hover .sv-glow{opacity:1}
+.sv-glow{
+  position:absolute;width:200px;height:200px;border-radius:50%;
+  opacity:0;transition:opacity .4s;pointer-events:none;
+  filter:blur(60px);
+  top:-60px;left:-40px;
+}
+.g1{background:rgba(0,174,239,.15)}
+.g2{background:rgba(245,161,199,.15)}
+.g3{background:rgba(232,39,43,.12)}
+
+.sv-num{
+  font-family:'Nunito',sans-serif;font-weight:900;
+  font-size:4rem;color:rgba(255,255,255,.04);
+  line-height:1;margin-bottom:24px;letter-spacing:-2px;
+  transition:color .3s;
+}
+.sv-card:hover .sv-num{color:rgba(255,255,255,.07)}
+.sv-icon-wrap{margin-bottom:20px}
+.sv-icon-wrap svg{width:40px;height:40px}
+.sv-card h3{
+  font-family:'Nunito',sans-serif;font-weight:900;
+  font-size:1.3rem;color:var(--branco);
+  margin-bottom:12px;
+}
+.sv-card p{font-size:.875rem;line-height:1.75;color:rgba(255,255,255,.45)}
+.sv-arrow{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:24px;font-size:.75rem;font-weight:700;
+  color:rgba(255,255,255,.3);letter-spacing:.5px;
+  transition:color .3s,gap .3s;
+}
+.sv-card:hover .sv-arrow{color:var(--azul);gap:10px}
+
+/* ═══ IDENTIDADE / BRAND SHOWCASE ═══ */
+#identidade{
+  background:linear-gradient(180deg,var(--preto) 0%,#0a0a14 100%);
+}
+.id-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+
+/* Visual side */
+.id-visual{position:relative}
+.id-billboard{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;padding:40px;
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(10px);
+}
+.id-bill-glow{
+  position:absolute;
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(0,174,239,.12),transparent);
+  top:-80px;right:-60px;pointer-events:none;
+}
+.id-bill-glow2{
+  position:absolute;
+  width:200px;height:200px;
+  background:radial-gradient(circle,rgba(245,161,199,.1),transparent);
+  bottom:-40px;left:-40px;pointer-events:none;
+}
+.id-waves-row{
+  display:flex;gap:0;margin-bottom:28px;
+  height:70px;border-radius:14px;overflow:hidden;
+  position:relative;
+}
+.id-wave-blue{
+  flex:1;
+  background:linear-gradient(135deg,rgba(0,174,239,.2),rgba(63,196,255,.1));
+  position:relative;
+}
+.id-wave-pink{
+  flex:1;
+  background:linear-gradient(135deg,rgba(245,161,199,.2),rgba(248,197,220,.1));
+}
+.id-logo-row{
+  display:flex;align-items:center;gap:14px;margin-bottom:24px;
+}
+.id-logo-box{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;padding:10px 16px;
+}
+.id-logo-box-icon{
+  width:28px;height:28px;background:var(--azul);
+  border-radius:6px;display:flex;align-items:center;justify-content:center;
+}
+.id-logo-box-icon svg{width:16px;height:16px}
+.id-logo-box b{
+  font-family:'Nunito',sans-serif;font-weight:900;
+  color:var(--branco);font-size:1rem;
+}
+.id-logo-box small{
+  display:block;font-family:'Noto Sans JP',sans-serif;
+  font-size:.5rem;color:var(--azul);letter-spacing:1.5px;
+}
+.id-tagline-big{
+  font-family:'Nunito',sans-serif;font-weight:900;
+  font-size:1.5rem;color:var(--branco);line-height:1.25;
+  margin-bottom:20px;
+}
+.id-tagline-big .tb{color:var(--azul)}
+.id-tagline-big .tp{color:var(--rosa)}
+.id-mock-row{display:flex;gap:12px}
+.id-m{
+  flex:1;height:80px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+  border:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden;
+}
+.id-m::before{content:'';position:absolute;inset:0}
+.im1::before{background:linear-gradient(135deg,rgba(0,174,239,.25),rgba(63,196,255,.15))}
+.im2::before{background:rgba(255,255,255,.03)}
+.im3::before{background:linear-gradient(135deg,rgba(245,161,199,.25),rgba(248,197,220,.15))}
+
+/* floating labels */
+.id-tag{
+  position:absolute;
+  background:rgba(13,13,18,.9);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;padding:8px 14px;
+  font-size:11px;font-weight:700;color:var(--branco);
+  backdrop-filter:blur(10px);
+}
+.id-tag1{right:-16px;top:28px;animation:floatFC 5s ease-in-out infinite}
+.id-tag1 small,.id-tag2 small{display:block;font-size:9px;color:rgba(255,255,255,.4);font-weight:400}
+.id-tag2{left:-16px;bottom:70px;animation:floatFC 6s ease-in-out infinite .5s}
+
+/* Right text */
+.id-text .s-title{margin-bottom:20px}
+.id-feats{display:flex;flex-direction:column;gap:16px;margin-top:32px}
+.id-feat{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:18px 20px;
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:14px;
+  transition:all .3s;
+}
+.id-feat:hover{background:rgba(0,174,239,.05);border-color:rgba(0,174,239,.15)}
+.id-feat-icon{
+  width:36px;height:36px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:1rem;
+}
+.fi1{background:rgba(0,174,239,.12)}
+.fi2{background:rgba(245,161,199,.12)}
+.fi3{background:rgba(232,39,43,.1)}
+.fi4{background:rgba(63,196,255,.1)}
+.id-feat div strong{display:block;font-size:.88rem;font-weight:700;color:var(--branco);margin-bottom:2px}
+.id-feat div span{font-size:.78rem;color:rgba(255,255,255,.4)}
+
+/* ═══ PALETA ═══ */
+#paleta{background:var(--preto)}
+#paleta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 50% 80% at 100% 50%,rgba(245,161,199,.04),transparent);
+  pointer-events:none;
+}
+.pal-head{text-align:center;margin-bottom:64px}
+.pal-head .s-sub{margin:0 auto;text-align:center}
+
+.pal-grid{
+  display:grid;grid-template-columns:repeat(6,1fr);
+  gap:12px;margin-bottom:40px;
+}
+.pal-card{border-radius:16px;overflow:hidden;transition:transform .3s}
+.pal-card:hover{transform:translateY(-6px)}
+.pal-swatch{height:90px}
+.pal-info{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  padding:12px 14px;
+}
+.pal-info b{display:block;font-size:.8rem;font-weight:700;color:var(--branco)}
+.pal-info code{font-size:.68rem;color:rgba(255,255,255,.4);font-family:monospace}
+
+/* Tipo */
+.tipo-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tipo-card{
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;padding:28px;
+}
+.tipo-lbl{
+  font-size:.63rem;font-weight:700;letter-spacing:2.5px;
+  text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px;
+}
+.tipo-big{
+  font-family:'Nunito',sans-serif;font-weight:900;
+  font-size:2.5rem;color:var(--branco);letter-spacing:-1px;line-height:1;
+}
+.tipo-abc{
+  font-size:.68rem;color:rgba(255,255,255,.25);
+  margin-top:12px;line-height:1.9;letter-spacing:.5px;
+}
+.tipo-samples{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.tipo-samples span{
+  font-family:'Nunito',sans-serif;font-weight:900;
+  font-size:1.2rem;
+}
+
+/* ═══ PROCESSO ═══ */
+#processo{
+  background:linear-gradient(180deg,#0a0a14 0%,var(--preto) 100%);
+}
+.proc-head{text-align:center;margin-bottom:80px}
+.proc-track{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:0;position:relative;
+}
+.proc-line-bg{
+  position:absolute;
+  top:44px;left:10%;right:10%;height:1px;
+  background:rgba(255,255,255,.06);
+}
+.proc-line-fill{
+  position:absolute;
+  top:44px;left:10%;width:0%;height:1px;
+  background:linear-gradient(90deg,var(--azul),var(--rosa));
+  transition:width 1.5s ease;
+  box-shadow:0 0 8px var(--azul);
+}
+.proc-line-fill.active{width:80%}
+
+.proc-step{
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;position:relative;z-index:1;padding:0 10px;
+}
+.proc-circle{
+  width:88px;height:88px;border-radius:50%;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;margin-bottom:20px;
+  transition:all .5s;position:relative;overflow:hidden;
+}
+.proc-circle::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 0deg,var(--azul) 0%,transparent 60%);
+  opacity:0;transition:opacity .4s;
+  animation:rotateConic 3s linear infinite;
+}
+@keyframes rotateConic{to{transform:rotate(360deg)}}
+.proc-step.active .proc-circle{
+  border-color:rgba(0,174,239,.4);
+  box-shadow:0 0 30px rgba(0,174,239,.2);
+}
+.proc-step.active .proc-circle::before{opacity:.5}
+.proc-num{font-size:.62rem;font-weight:800;color:var(--azul);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.proc-step h4{font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:800;color:var(--branco);margin-bottom:6px}
+.proc-step p{font-size:.75rem;line-height:1.6;color:rgba(255,255,255,.35)}
+
+/* ═══ CTA / CONTATO ═══ */
+#cta{
+  padding:160px 60px;
+  background:var(--preto);
+  position:relative;overflow:hidden;
+}
+.cta-aurora{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 80% at 30% 50%,rgba(0,174,239,.08),transparent),
+    radial-gradient(ellipse 40% 60% at 80% 40%,rgba(245,161,199,.06),transparent);
+}
+.cta-grid-line{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:80px 80px;
+}
+.cta-inner{
+  max-width:900px;margin:0 auto;
+  text-align:center;position:relative;z-index:2;
+}
+.cta-inner .s-eyebrow{justify-content:center}
+.cta-title{
+  font-family:'Nunito',sans-serif;font-weight:900;
+  font-size:clamp(2.5rem,6vw,5rem);
+  letter-spacing:-2px;line-height:1;
+  margin-bottom:20px;
+  background:linear-gradient(135deg,var(--branco) 0%,rgba(255,255,255,.6) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cta-title .ct-blue{
+  background:linear-gradient(90deg,var(--azul),var(--azul2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cta-title .ct-red{color:var(--vermelho);-webkit-text-fill-color:var(--vermelho)}
+.cta-sub{
+  font-size:1rem;line-height:1.75;
+  color:rgba(255,255,255,.4);
+  max-width:540px;margin:0 auto 48px;
+}
+
+/* Channel buttons */
+.cta-channels{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  margin-bottom:56px;
+}
+.ch{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  padding:14px 24px;border-radius:14px;
+  text-decoration:none;color:var(--branco);
+  font-size:.88rem;font-weight:600;
+  transition:all .3s;
+  position:relative;overflow:hidden;
+}
+.ch::before{
+  content:'';position:absolute;inset:0;
+  opacity:0;transition:opacity .3s;
+}
+.ch:hover{transform:translateY(-4px)}
+.ch:hover::before{opacity:1}
+.ch-wa::before{background:rgba(37,211,102,.1)}
+.ch-ig::before{background:rgba(245,161,199,.1)}
+.ch-em::before{background:rgba(0,174,239,.1)}
+.ch:hover{border-color:rgba(255,255,255,.2)}
+.ch-icon{font-size:1.1rem}
+.ch-label small{display:block;font-size:.65rem;color:rgba(255,255,255,.35);font-weight:400}
+
+/* Form */
+.cta-form{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;padding:48px;
+  position:relative;overflow:hidden;
+  text-align:left;
+}
+.cta-form::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--azul),var(--rosa),transparent);
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.fg{display:flex;flex-direction:column;gap:6px}
+.fg label{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.5px;text-transform:uppercase}
+.fg input,.fg textarea,.fg select{
+  padding:13px 16px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  font-family:'Poppins',sans-serif;font-size:.88rem;
+  color:var(--branco);outline:none;resize:none;
+  transition:border-color .25s,background .25s;
+}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.2)}
+.fg input:focus,.fg textarea:focus,.fg select:focus{
+  border-color:rgba(0,174,239,.4);
+  background:rgba(0,174,239,.04);
+}
+.fg textarea{height:100px}
+.fg select option{background:#1a1a2e}
+.form-btn{
+  width:100%;margin-top:20px;
+  background:linear-gradient(135deg,var(--azul),var(--azul2));
+  border:none;color:var(--preto);
+  padding:16px;border-radius:12px;
+  font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:700;
+  cursor:pointer;transition:all .3s;
+  box-shadow:0 0 30px rgba(0,174,239,.25);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.form-btn:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(0,174,239,.4)}
+
+/* ═══ FOOTER ═══ */
+footer{
+  background:#080810;
+  border-top:1px solid rgba(255,255,255,.05);
+  padding:64px 60px 32px;
+}
+.ft-inner{max-width:1280px;margin:0 auto}
+.ft-top{
+  display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;
+  gap:48px;padding-bottom:48px;
+  border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:32px;
+}
+.ft-brand-p{
+  font-size:.83rem;line-height:1.8;
+  color:rgba(255,255,255,.3);margin-top:16px;max-width:280px;
+}
+.ft-jp-f{
+  font-family:'Noto Sans JP',sans-serif;font-size:.55rem;
+  color:var(--azul);letter-spacing:2.5px;margin-top:8px;opacity:.5;display:block;
+}
+.ft-col h5{
+  font-size:.72rem;font-weight:700;color:rgba(255,255,255,.7);
+  margin-bottom:18px;letter-spacing:1px;text-transform:uppercase;
+}
+.ft-col a{
+  display:block;font-size:.8rem;
+  color:rgba(255,255,255,.3);text-decoration:none;
+  margin-bottom:10px;transition:color .2s;
+}
+.ft-col a:hover{color:var(--azul)}
+.ft-bottom{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+}
+.ft-copy{font-size:.72rem;color:rgba(255,255,255,.2)}
+.ft-soc{display:flex;gap:8px}
+.ft-soc a{
+  width:34px;height:34px;border-radius:8px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;text-decoration:none;transition:all .2s;
+}
+.ft-soc a:hover{background:rgba(0,174,239,.15);border-color:rgba(0,174,239,.3)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:960px){
+  nav{padding:0 24px}
+  .nav-links{display:none}
+  .hero-inner{grid-template-columns:1fr;padding:40px 0}
+  .hero-visual{display:none}
+  .id-grid{grid-template-columns:1fr}
+  .sv-grid{grid-template-columns:1fr}
+  .pal-grid{grid-template-columns:repeat(3,1fr)}
+  .tipo-row{grid-template-columns:1fr}
+  .proc-track{display:flex;flex-wrap:wrap;gap:32px;justify-content:center}
+  .proc-track .proc-line-bg,.proc-track .proc-line-fill{display:none}
+  .proc-step{flex:0 0 40%}
+  .cta-form .form-row{grid-template-columns:1fr}
+  .ft-top{grid-template-columns:1fr 1fr}
+  .section{padding:80px 24px}
+  #cta{padding:80px 24px}
+  footer{padding:48px 24px 24px}
+}
+@media(max-width:560px){
+  .pal-grid{grid-template-columns:repeat(2,1fr)}
+  .proc-step{flex:0 0 100%}
+  .ft-top{grid-template-columns:1fr}
+  .cta-channels{flex-direction:column;align-items:stretch}
+}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="firex-icon" viewBox="0 0 32 32" fill="none">
+       <image href="firexlogo.png" width="32" height="32"/>
+    <!-- ↑↑↑  FIM DO ÍCONE  ↑↑↑ -->
+  </symbol>
+</svg>
+
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NOISE -->
+<div id="noise"></div>
+
+<!-- PARTICLES -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">FIREX</div>
+  <div class="loader-jp">デザインスタジオ</div>
+  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-icon">
+      <svg viewBox="0 0 32 32" fill="none"><use href="#firex-icon"/></svg>
+    </div>
+    <div class="nav-wordmark">
+      <b>FIREX</b>
+      <small>デザインスタジオ</small>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#servicos">Serviços</a>
+    <a href="#identidade">Identidade</a>
+    <a href="#processo">Processo</a>
+    <a href="#cta">Contato</a>
+  </div>
+  <a href="#cta" class="nav-cta">Solicitar Projeto</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="aurora"></div>
+  <div class="grid-bg"></div>
+
+  <div class="hero-inner">
+    <!-- LEFT -->
+    <div>
+      <div class="hero-tag"><span class="dot-live"></span>Estúdio Criativo · Ceará, Brasil</div>
+      <h1 class="hero-h1">
+        <span class="h1-line"><span class="h1-white">Criamos</span></span>
+        <span class="h1-line"><span class="h1-blue">universos</span></span>
+        <span class="h1-line"><span class="h1-pink">visuais<span class="h1-red">.</span></span></span>
+      </h1>
+      <p class="hero-desc">Identidades visuais, mascotes e modelagem 3D com a alma do anime e a precisão do design japonês. Sua marca merece personalidade real.</p>
+      <p class="hero-jp-line">デザインスタジオ — Estúdio Criativo Independente</p>
+      <div class="hero-btns">
+        <a href="#cta" class="btn-glow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Falar no WhatsApp
+        </a>
+        <a href="#servicos" class="btn-outline">Ver Serviços ↓</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <span class="stat-num" data-count="40">0</span>
+          <span class="stat-lbl">Projetos +</span>
+        </div>
+        <div>
+          <span class="stat-num" data-count="30">0</span>
+          <span class="stat-lbl">Clientes</span>
+        </div>
+        <div>
+          <span class="stat-num" data-count="3">0</span>
+          <span class="stat-lbl">Anos</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="hero-visual">
+      <div class="orbit orbit1"><div class="orbit-dot od1"></div></div>
+      <div class="orbit orbit2"><div class="orbit-dot od2"></div></div>
+
+      <div class="hv-card" id="hvCard">
+        <!-- Inner glow -->
+        <div style="position:absolute;width:250px;height:250px;background:radial-gradient(circle,rgba(0,174,239,.08),transparent);top:-60px;right:-40px;pointer-events:none;border-radius:50%"></div>
+
+        <div class="hv-logo">
+          <div class="hv-icon">
+            <svg viewBox="0 0 32 32" fill="none"><use href="#firex-icon"/></svg>
+          </div>
+          <div class="hv-brand-text">
+            <b>FIREX</b>
+            <small>デザインスタジオ</small>
+          </div>
+        </div>
+
+        <!-- Animated waves -->
+        <div class="hv-waves">
+          <div class="hv-waves-bg"></div>
+          <svg viewBox="0 0 440 90" fill="none" style="position:absolute;bottom:0;width:100%">
+            <path class="wave-anim" d="M0 45 Q110 80 220 45 Q330 10 440 45 L440 90 L0 90Z" fill="rgba(0,174,239,0.2)"/>
+            <path class="wave-anim2" d="M0 55 Q110 20 220 55 Q330 90 440 55 L440 90 L0 90Z" fill="rgba(245,161,199,0.15)"/>
+          </svg>
+          <!-- Stars inside -->
+          <svg class="star-anim" style="top:10px;right:20px;animation-delay:0s" width="16" height="16" viewBox="0 0 20 20"><path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5Z" fill="#3FC4FF"/></svg>
+          <svg class="star-anim" style="top:14px;left:30px;animation-delay:.8s" width="10" height="10" viewBox="0 0 20 20"><path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5Z" fill="#F5A1C7"/></svg>
+          <svg class="star-anim" style="bottom:20px;left:50%;animation-delay:1.5s" width="8" height="8" viewBox="0 0 20 20"><path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5Z" fill="#E8272B"/></svg>
+        </div>
+
+        <div class="hv-tagline">
+          Conectando suas <span class="t-blue">ideias</span><br/>com a <span class="t-pink">inovação</span>
+        </div>
+
+        <div class="hv-mockups">
+          <div class="hv-mock m-blue">🪪</div>
+          <div class="hv-mock m-pink">☕</div>
+          <div class="hv-mock m-dark">🏙️</div>
+        </div>
+
+        <!-- Floating cards -->
+        <div class="fc fc1">
+          <span class="fc-dot" style="background:#00AEEF"></span>Identidade Completa
+          <span>Branding · Mascotes · 3D</span>
+        </div>
+        <div class="fc fc2">
+          <span class="fc-dot" style="background:#F5A1C7"></span>Estúdio Firex
+          <span>Ceará, Brasil 🇧🇷</span>
+        </div>
+        <div class="fc fc3">
+          <span class="fc-dot" style="background:#E8272B"></span>40+ Projetos
+          <span>Entregues com excelência</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    SCROLL
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section id="servicos" class="section">
+  <div class="section-inner">
+    <div class="sv-header reveal">
+      <div class="s-eyebrow"><span class="s-eyebrow-line"></span>O que fazemos<span class="s-eyebrow-line"></span></div>
+      <h2 class="s-title">Criamos com alma,<br/>entregamos com precisão.</h2>
+      <p class="s-sub">Cada projeto começa com uma história. A nossa missão é transformar essa história em algo visual, único e inesquecível.</p>
+    </div>
+    <div class="sv-grid reveal">
+      <div class="sv-card">
+        <div class="sv-glow g1"></div>
+        <div class="sv-num">01</div>
+        <div class="sv-icon-wrap">
+          <svg viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="20" fill="rgba(0,174,239,0.1)"/>
+            <path d="M12 28L20 12L28 28M15 22H25" stroke="#00AEEF" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Identidade Visual</h3>
+        <p>Logo, manual de marca, paleta, tipografia e aplicações completas. Um sistema visual que representa sua marca em todos os contextos, do digital ao impresso.</p>
+        <div class="sv-arrow">Saiba mais <span>→</span></div>
+      </div>
+      <div class="sv-card">
+        <div class="sv-glow g2"></div>
+        <div class="sv-num">02</div>
+        <div class="sv-icon-wrap">
+          <svg viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="20" fill="rgba(245,161,199,0.1)"/>
+            <circle cx="20" cy="16" r="6" stroke="#F5A1C7" stroke-width="2"/>
+            <path d="M12 32C12 27.6 15.6 24 20 24S28 27.6 28 32" stroke="#F5A1C7" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="28" cy="14" r="3" fill="#F5A1C7" opacity=".5"/>
+            <circle cx="12" cy="14" r="3" fill="#F5A1C7" opacity=".5"/>
+          </svg>
+        </div>
+        <h3>Mascotes &amp; Personagens</h3>
+        <p>Do sketch ao modelo final. Personagens com expressividade e alma que se tornam o rosto da sua marca — em 2D, 3D ou animação.</p>
+        <div class="sv-arrow">Saiba mais <span>→</span></div>
+      </div>
+      <div class="sv-card">
+        <div class="sv-glow g3"></div>
+        <div class="sv-num">03</div>
+        <div class="sv-icon-wrap">
+          <svg viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="20" fill="rgba(232,39,43,0.08)"/>
+            <path d="M20 8L32 14V26L20 32L8 26V14L20 8Z" stroke="#E8272B" stroke-width="1.5"/>
+            <path d="M20 8V32M8 14L32 26M32 14L8 26" stroke="#E8272B" stroke-width="1" opacity=".4"/>
+          </svg>
+        </div>
+        <h3>Modelagem 3D</h3>
+        <p>Modelos profissionais para games, animações, publicidade e renderizações. Do Blender ao render final com qualidade cinematográfica.</p>
+        <div class="sv-arrow" style="color:rgba(232,39,43,.5)">Saiba mais <span>→</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IDENTIDADE -->
+<section id="identidade" class="section">
+  <div class="section-inner">
+    <div class="id-grid">
+      <div class="id-visual reveal rl">
+        <div class="id-billboard">
+          <div class="id-bill-glow"></div>
+          <div class="id-bill-glow2"></div>
+
+          <!-- Animated waves on billboard -->
+          <div class="id-waves-row">
+            <div class="id-wave-blue">
+              <svg style="position:absolute;bottom:0;width:100%" height="70" viewBox="0 0 240 70" fill="none" preserveAspectRatio="none">
+                <path class="wave-anim" d="M0 35 Q60 70 120 35 Q180 0 240 35 L240 70 L0 70Z" fill="rgba(0,174,239,0.25)"/>
+              </svg>
+            </div>
+            <div class="id-wave-pink">
+              <svg style="position:absolute;bottom:0;width:100%" height="70" viewBox="0 0 240 70" fill="none" preserveAspectRatio="none">
+                <path class="wave-anim2" d="M0 35 Q60 0 120 35 Q180 70 240 35 L240 70 L0 70Z" fill="rgba(245,161,199,0.25)"/>
+              </svg>
+            </div>
+            <!-- Stars -->
+            <svg class="star-anim" style="position:absolute;top:12px;left:40px" width="18" height="18" viewBox="0 0 20 20"><path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5Z" fill="#3FC4FF" opacity=".8"/></svg>
+            <svg class="star-anim" style="position:absolute;top:8px;right:50px;animation-delay:.7s" width="12" height="12" viewBox="0 0 20 20"><path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5Z" fill="#F5A1C7" opacity=".8"/></svg>
+            <svg class="star-anim" style="position:absolute;top:20px;right:30%;animation-delay:1.2s" width="8" height="8" viewBox="0 0 20 20"><path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5Z" fill="#E8272B" opacity=".7"/></svg>
+          </div>
+
+          <div class="id-logo-row">
+            <div class="id-logo-box">
+              <div class="id-logo-box-icon">
+                <svg viewBox="0 0 32 32" fill="none"><use href="#firex-icon"/></svg>
+              </div>
+              <div>
+                <b>FIREX</b>
+                <small>デザインスタジオ</small>
+              </div>
+            </div>
+            <div style="font-family:'Noto Sans JP',sans-serif;font-size:.55rem;color:rgba(255,255,255,.3);letter-spacing:2px">Estúdio</div>
+          </div>
+
+          <div class="id-tagline-big">
+            Conectando suas <span class="tb">ideias</span><br/>com a <span class="tp">inovação</span>
+          </div>
+
+          <div class="id-mock-row">
+            <div class="id-m im1">🪪</div>
+            <div class="id-m im2">🏙️</div>
+            <div class="id-m im3">☕</div>
+          </div>
+        </div>
+        <div class="id-tag id-tag1">Manual da Marca<small>Incluso em todos os pacotes</small></div>
+        <div class="id-tag id-tag2">Aplicação em mockups<small>Outdoor, caneca, cartão...</small></div>
+      </div>
+
+      <div class="id-text reveal rr">
+        <div class="s-eyebrow"><span class="s-eyebrow-line"></span>Nossa entrega</div>
+        <h2 class="s-title">Do briefing ao<br/>manual completo.</h2>
+        <p class="s-sub">Não vendemos só um logo. Entregamos um sistema de identidade pensado para funcionar em todos os pontos de contato da sua marca.</p>
+        <div class="id-feats">
+          <div class="id-feat">
+            <div class="id-feat-icon fi1">📐</div>
+            <div><strong>Logo em todas as versões</strong><span>Principal, monocromática, negativa e simplificada</span></div>
+          </div>
+          <div class="id-feat">
+            <div class="id-feat-icon fi2">📖</div>
+            <div><strong>Manual de marca completo</strong><span>Paleta, tipografia, aplicações e regras de uso</span></div>
+          </div>
+          <div class="id-feat">
+            <div class="id-feat-icon fi3">🔥</div>
+            <div><strong>Mockups reais e profissionais</strong><span>Cartão, caneca, outdoor, papelaria e mais</span></div>
+          </div>
+          <div class="id-feat">
+            <div class="id-feat-icon fi4">📦</div>
+            <div><strong>Pacote de arquivos completo</strong><span>AI, PDF, PNG, SVG — organizados e prontos</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PALETA -->
+<section id="paleta" class="section">
+  <div class="section-inner">
+    <div class="pal-head reveal">
+      <div class="s-eyebrow"><span class="s-eyebrow-line"></span>Identidade Visual<span class="s-eyebrow-line"></span></div>
+      <h2 class="s-title">Cores &amp; Tipografia</h2>
+      <p class="s-sub">A paleta da Firex foi construída para transmitir criatividade, modernidade e profissionalismo — com personalidade inconfundível.</p>
+    </div>
+    <div class="pal-grid reveal">
+      <div class="pal-card"><div class="pal-swatch" style="background:#00AEEF"></div><div class="pal-info"><b>Azul Firex</b><code>#00AEEF</code></div></div>
+      <div class="pal-card"><div class="pal-swatch" style="background:#3FC4FF"></div><div class="pal-info"><b>Azul Claro</b><code>#3FC4FF</code></div></div>
+      <div class="pal-card"><div class="pal-swatch" style="background:#F5A1C7"></div><div class="pal-info"><b>Rosa Pastel</b><code>#F5A1C7</code></div></div>
+      <div class="pal-card"><div class="pal-swatch" style="background:#E8272B"></div><div class="pal-info"><b>Vermelho</b><code>#E8272B</code></div></div>
+      <div class="pal-card"><div class="pal-swatch" style="background:#111111"></div><div class="pal-info"><b>Preto</b><code>#111111</code></div></div>
+      <div class="pal-card"><div class="pal-swatch" style="background:#FFFFFF"></div><div class="pal-info"><b>Branco</b><code>#FFFFFF</code></div></div>
+    </div>
+    <div class="tipo-row reveal">
+      <div class="tipo-card">
+        <div class="tipo-lbl">Display — Títulos</div>
+        <div class="tipo-big">Cocogoose</div>
+        <div class="tipo-abc">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br/>abcdefghijklmnopqrstuvwxyz · 0123456789</div>
+        <div class="tipo-samples">
+          <span style="color:#00AEEF">FIREX</span>
+          <span style="color:#F5A1C7">STUDIOS</span>
+          <span style="color:#E8272B">デザイン</span>
+        </div>
+      </div>
+      <div class="tipo-card">
+        <div class="tipo-lbl">Corpo — Textos</div>
+        <div style="font-family:'Poppins',sans-serif;font-size:1.6rem;font-weight:300;color:rgba(255,255,255,.8);line-height:1">Poppins</div>
+        <div class="tipo-abc" style="font-family:'Poppins',sans-serif">Light · Regular · Medium · SemiBold<br/>Legível, moderna e profissional.</div>
+        <div style="font-family:'Poppins',sans-serif;font-size:.85rem;color:rgba(255,255,255,.4);margin-top:12px">
+          Ideal para parágrafos, legendas e interfaces.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSO -->
+<section id="processo" class="section">
+  <div class="section-inner">
+    <div class="proc-head reveal">
+      <div class="s-eyebrow"><span class="s-eyebrow-line"></span>Como trabalhamos<span class="s-eyebrow-line"></span></div>
+      <h2 class="s-title">Da ideia ao resultado.</h2>
+      <p class="s-sub" style="margin:0 auto;text-align:center">Cinco etapas cuidadosas para garantir que cada entrega supere as expectativas.</p>
+    </div>
+    <div class="proc-track" id="procTrack">
+      <div class="proc-line-bg"></div>
+      <div class="proc-line-fill" id="procLine"></div>
+      <div class="proc-step">
+        <div class="proc-circle">🔍</div>
+        <div class="proc-num">01</div>
+        <h4>Pesquisa</h4>
+        <p>Imersão no seu mercado, público e concorrência</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-circle">🧭</div>
+        <div class="proc-num">02</div>
+        <h4>Estratégia</h4>
+        <p>Posicionamento, tom de voz e direcionamento</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-circle">✏️</div>
+        <div class="proc-num">03</div>
+        <h4>Criação</h4>
+        <p>Sketches, conceitos e primeiras versões visuais</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-circle">🔧</div>
+        <div class="proc-num">04</div>
+        <h4>Refinamento</h4>
+        <p>Ajustes finos com sua participação ativa</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-circle">📦</div>
+        <div class="proc-num">05</div>
+        <h4>Entrega</h4>
+        <p>Pacote completo e manual de identidade</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA + CONTATO -->
+<section id="cta">
+  <div class="cta-aurora"></div>
+  <div class="cta-grid-line"></div>
+  <div class="cta-inner">
+    <div class="s-eyebrow reveal"><span class="s-eyebrow-line"></span>Vamos criar juntos<span class="s-eyebrow-line"></span></div>
+    <h2 class="cta-title reveal">
+      Sua marca<br/>merece ser<br/><span class="ct-blue">inesquecível</span><span class="ct-red">.</span>
+    </h2>
+    <p class="cta-sub reveal">A Firex Studios está pronta para transformar sua ideia em uma identidade visual com alma, técnica e personalidade única.</p>
+
+    <div class="cta-channels reveal">
+      <a href="https://wa.me/55SEUNUMERO" class="ch ch-wa">
+        <span class="ch-icon">💬</span>
+        <div><div>WhatsApp</div><small>Resposta rápida</small></div>
+      </a>
+      <a href="https://instagram.com/firexstudios" class="ch ch-ig">
+        <span class="ch-icon">📷</span>
+        <div><div>Instagram</div><small>@firexstudios</small></div>
+      </a>
+      <a href="mailto:contato@firexstudios.com" class="ch ch-em">
+        <span class="ch-icon">✉️</span>
+        <div><div>E-mail</div><small>contato@firexstudios.com</small></div>
+      </a>
+    </div>
+
+    <div class="cta-form reveal">
+      <div class="form-row">
+        <div class="fg"><label>Nome</label><input type="text" placeholder="Seu nome"/></div>
+        <div class="fg"><label>WhatsApp / E-mail</label><input type="text" placeholder="(99) 99999-9999"/></div>
+        <div class="fg"><label>Marca / Empresa</label><input type="text" placeholder="Ex: Firex Studios"/></div>
+        <div class="fg">
+          <label>Tipo de projeto</label>
+          <select>
+            <option value="">Selecione...</option>
+            <option>Identidade Visual Completa</option>
+            <option>Logotipo</option>
+            <option>Mascote 2D</option>
+            <option>Mascote 3D</option>
+            <option>Modelagem 3D</option>
+            <option>Social Media</option>
+            <option>Web Design</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label>Mensagem</label><textarea placeholder="Conta sobre seu projeto, referências, prazo..."></textarea></div>
+      <button class="form-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Enviar via WhatsApp
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-inner">
+    <div class="ft-top">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#00AEEF,#3FC4FF);display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(0,174,239,.35)">
+            <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><use href="#firex-icon"/></svg>
+          </div>
+          <div>
+            <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.1rem;color:rgba(255,255,255,.9)">Estúdio FIREX</div>
+            <span class="ft-jp-f">デザインスタジオ</span>
+          </div>
+        </div>
+        <p class="ft-brand-p">Conectando suas ideias com a inovação. Estúdio criativo independente especializado em identidade visual, mascotes e modelagem 3D.</p>
+      </div>
+      <div class="ft-col">
+        <h5>Navegação</h5>
+        <a href="#hero">Início</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#identidade">Identidade</a>
+        <a href="#processo">Processo</a>
+        <a href="#cta">Contato</a>
+      </div>
+      <div class="ft-col">
+        <h5>Serviços</h5>
+        <a href="#">Identidade Visual</a>
+        <a href="#">Logotipos</a>
+        <a href="#">Mascotes</a>
+        <a href="#">Modelagem 3D</a>
+        <a href="#">Social Media</a>
+      </div>
+      <div class="ft-col">
+        <h5>Contato</h5>
+        <a href="https://wa.me/55SEUNUMERO">WhatsApp</a>
+        <a href="https://instagram.com/firexstudios">Instagram</a>
+        <a href="mailto:contato@firexstudios.com">E-mail</a>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <p class="ft-copy">© 2025 Estúdio Firex · デザインスタジオ · Todos os direitos reservados.</p>
+      <div class="ft-soc">
+        <a href="https://instagram.com/firexstudios">📷</a>
+        <a href="https://wa.me/55SEUNUMERO">💬</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ─── LOADER ─── */
+window.addEventListener('load',()=>{
+  setTimeout(()=>document.getElementById('loader').classList.add('done'),2000);
+});
+
+/* ─── CURSOR ─── */
+const cur=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)}
+animRing();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='20px';cur.style.height='20px';cur.style.background='var(--rosa)';ring.style.width='50px';ring.style.height='50px'});
+  el.addEventListener('mouseleave',()=>{cur.style.width='12px';cur.style.height='12px';cur.style.background='var(--azul)';ring.style.width='36px';ring.style.height='36px'});
+});
+
+/* ─── NAV SCROLL ─── */
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+
+/* ─── PARTICLES CANVAS ─── */
+const canvas=document.getElementById('particle-canvas');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight});
+
+const COLORS=['rgba(0,174,239,','rgba(245,161,199,','rgba(63,196,255,','rgba(232,39,43,'];
+const particles=Array.from({length:90},()=>({
+  x:Math.random()*canvas.width,
+  y:Math.random()*canvas.height,
+  r:Math.random()*1.5+.3,
+  vx:(Math.random()-.5)*.25,
+  vy:(Math.random()-.5)*.25,
+  a:Math.random()*.5+.15,
+  c:COLORS[Math.floor(Math.random()*COLORS.length)],
+  type:Math.random()<.3?'star':'dot',
+  size:Math.random()*4+2,
+}));
+
+// Also add sparkle 4-point stars
+const stars4=Array.from({length:18},()=>({
+  x:Math.random()*canvas.width,
+  y:Math.random()*canvas.height,
+  s:Math.random()*6+3,
+  a:0,da:Math.random()*.02+.005,
+  alpha:Math.random()*.5+.2,
+  c:COLORS[Math.floor(Math.random()*COLORS.length)],
+}));
+
+function draw4Star(x,y,s,alpha,color){
+  ctx.save();ctx.translate(x,y);
+  ctx.fillStyle=color+alpha+')';
+  ctx.beginPath();
+  ctx.moveTo(0,-s);ctx.lineTo(s*.3,-s*.3);ctx.lineTo(s,0);
+  ctx.lineTo(s*.3,s*.3);ctx.lineTo(0,s);ctx.lineTo(-s*.3,s*.3);
+  ctx.lineTo(-s,0);ctx.lineTo(-s*.3,-s*.3);ctx.closePath();
+  ctx.fill();ctx.restore();
+}
+
+function animParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;
+    if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=p.c+p.a+')';ctx.fill();
+  });
+  stars4.forEach(s=>{
+    s.a+=s.da;
+    const al=Math.abs(Math.sin(s.a))*s.alpha;
+    draw4Star(s.x,s.y,s.s,al,s.c);
+    s.y-=.12;if(s.y<-20)s.y=canvas.height+20;
+  });
+  requestAnimationFrame(animParticles);
+}
+animParticles();
+
+/* ─── MOUSE PARALLAX ON CARD ─── */
+const hvCard=document.getElementById('hvCard');
+if(hvCard){
+  document.addEventListener('mousemove',e=>{
+    const rx2=(e.clientX/window.innerWidth-.5)*12;
+    const ry2=(e.clientY/window.innerHeight-.5)*-8;
+    hvCard.style.transform=`perspective(1000px) rotateY(${rx2}deg) rotateX(${ry2}deg)`;
+  });
+}
+
+/* ─── SCROLL REVEAL ─── */
+const revEls=document.querySelectorAll('.reveal');
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');ro.unobserve(e.target)}});
+},{threshold:.12});
+revEls.forEach(el=>ro.observe(el));
+
+/* ─── PROCESS LINE ANIMATE ─── */
+const procLine=document.getElementById('procLine');
+if(procLine){
+  const pl=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){procLine.classList.add('active');pl.unobserve(e.target)}});
+  },{threshold:.3});
+  pl.observe(document.getElementById('procTrack'));
+}
+
+/* ─── PROC STEPS ACTIVE ─── */
+const procSteps=document.querySelectorAll('.proc-step');
+const stepObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('active')});
+},{threshold:.3});
+procSteps.forEach((s,i)=>{setTimeout(()=>stepObs.observe(s),i*200)});
+
+/* ─── COUNT UP ─── */
+const counters=document.querySelectorAll('[data-count]');
+const coObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el=e.target,target=+el.dataset.count;
+      let cur=0;const step=target/40;
+      const t=setInterval(()=>{
+        cur+=step;if(cur>=target){el.textContent=target+'+';clearInterval(t)}
+        else el.textContent=Math.floor(cur)+'+';
+      },40);
+      coObs.unobserve(el);
+    }
+  });
+},{threshold:.5});
+counters.forEach(c=>coObs.observe(c));
+
+/* ─── SMOOTH SCROLL ─── */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t)t.scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
