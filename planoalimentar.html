@@ -423,14 +423,15 @@ function parseDate(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y
 function addDays(dateStr, n){ const d=parseDate(dateStr); d.setDate(d.getDate()+n); return fmtDate(d); }
 function uid(){ return Math.random().toString(36).slice(2,9); }
 
+const STORAGE_PREFIX = 'pratodoDia:';
 async function storeGet(key, fallback){
   try{
-    const r = await window.storage.get(key, false);
-    return r ? JSON.parse(r.value) : fallback;
+    const raw = localStorage.getItem(STORAGE_PREFIX+key);
+    return raw !== null ? JSON.parse(raw) : fallback;
   }catch(e){ return fallback; }
 }
 async function storeSet(key, value){
-  try{ await window.storage.set(key, JSON.stringify(value), false); }
+  try{ localStorage.setItem(STORAGE_PREFIX+key, JSON.stringify(value)); }
   catch(e){ console.error('storage set falhou', key, e); }
 }
 
@@ -996,8 +997,9 @@ async function init(){
   document.getElementById('resetTudo').addEventListener('click', async ()=>{
     if(!confirm('Isso apaga todos os dados salvos deste protótipo. Continuar?')) return;
     try{
-      const r = await window.storage.list('', false);
-      if(r && r.keys) for(const k of r.keys) await window.storage.delete(k, false);
+      Object.keys(localStorage)
+        .filter(k=>k.startsWith(STORAGE_PREFIX))
+        .forEach(k=>localStorage.removeItem(k));
     }catch(e){}
     location.reload();
   });
