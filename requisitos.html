@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Requisitos do Curso — Guia do Padrinho</title>
+<meta name="description" content="Guia rápido sobre AAC, Estágio, Documentação, TCC e ENADE para quem está começando em Estética e Cosmética, Biomedicina ou Farmácia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EFEEE3;
+    --card: #FAF8EE;
+    --card-border: #DEDACB;
+    --ink-dark: #16302B;
+    --ink: #23231D;
+    --ink-soft: #55564C;
+    --gold: #B3852E;
+    --gold-soft: #EADFC2;
+    --wine: #6E2A3A;
+    --wine-soft: #E9D9DC;
+    --paper-line: #DAD6C7;
+    --max: 720px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .display{
+    font-family: 'Fraunces', serif;
+    color: var(--ink-dark);
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  a{ color: var(--wine); }
+
+  img, svg{ display: block; }
+
+  .wrap{
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .wrap-wide{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(239,238,227,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--paper-line);
+  }
+  .nav-inner{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .nav-brand{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--ink-dark);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .nav-links{
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar{ display: none; }
+  .nav-links a{
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    white-space: nowrap;
+    padding: 4px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .nav-links a:hover{ color: var(--ink-dark); border-color: var(--gold); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background: var(--ink-dark);
+    color: #EFEEE3;
+    padding: 72px 24px 64px;
+  }
+  .hero-inner{
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow{
+    font-size: 0.82rem;
+    color: #B7C7C1;
+    margin: 0 0 14px;
+    font-weight: 500;
+  }
+  .hero h1{
+    color: #FBFAF3;
+    font-size: clamp(2rem, 5.4vw, 2.9rem);
+    font-weight: 600;
+    line-height: 1.12;
+  }
+  .hero h1 em{
+    font-style: italic;
+    color: var(--gold-soft);
+  }
+  .hero p{
+    margin: 22px 0 0;
+    font-size: 1.05rem;
+    color: #D6D9CE;
+    max-width: 46ch;
+  }
+  .hero-sign{
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-avatar{
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--ink-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .hero-sign span{
+    display: block;
+    font-size: 0.85rem;
+    color: #B7C7C1;
+    line-height: 1.4;
+  }
+  .hero-sign strong{ color: #EFEEE3; font-weight: 600; }
+
+  .fade-in{
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeIn 0.7s ease forwards;
+  }
+  .fade-in.d2{ animation-delay: 0.1s; }
+  .fade-in.d3{ animation-delay: 0.2s; }
+  @keyframes fadeIn{ to{ opacity: 1; transform: translateY(0); } }
+
+  /* ---------- INTRO ---------- */
+  .intro{
+    padding: 48px 24px;
+    border-bottom: 1px solid var(--paper-line);
+  }
+  .intro-grid{
+    display: grid;
+    gap: 28px;
+  }
+  @media (min-width: 720px){
+    .intro-grid{ grid-template-columns: 1.3fr 1fr; align-items: start; }
+  }
+  .intro h2{ font-size: 1.4rem; font-weight: 600; margin-bottom: 12px; }
+  .intro p{ color: var(--ink-soft); margin: 0 0 12px; }
+  .intro-box{
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 20px 22px;
+  }
+  .intro-box p{ font-size: 0.92rem; margin: 0; }
+  .intro-box strong{ color: var(--ink-dark); }
+
+  /* ---------- SECTIONS ---------- */
+  .req{
+    padding: 56px 24px;
+    border-bottom: 1px solid var(--paper-line);
+    scroll-margin-top: 70px;
+  }
+  .req-inner{
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    gap: 28px;
+  }
+  @media (min-width: 760px){
+    .req-inner{
+      grid-template-columns: 220px 1fr;
+      align-items: start;
+    }
+    .req.alt .req-inner{
+      grid-template-columns: 1fr 220px;
+    }
+    .req.alt .req-icon-col{ order: 2; }
+    .req.alt .req-content{ order: 1; }
+  }
+  .req-icon-col{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  @media (min-width: 760px){
+    .req-icon-col{ flex-direction: column; align-items: flex-start; gap: 16px; }
+  }
+  .req-badge{
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .req-badge.gold{ background: var(--gold-soft); color: var(--gold); }
+  .req-badge.wine{ background: var(--wine-soft); color: var(--wine); }
+  .req-badge svg{ width: 26px; height: 26px; stroke-width: 1.7; }
+  .req-tag{
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .req-content h3{
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .req-content > p{
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin: 0 0 18px;
+  }
+  .req-tip{
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-left: 3px solid var(--gold);
+    border-radius: 3px;
+    padding: 14px 18px;
+    font-size: 0.92rem;
+    margin: 0 0 16px;
+    max-width: 62ch;
+  }
+  .req.alt .req-tip{ border-left-color: var(--wine); }
+  .req-tip strong{ color: var(--ink-dark); display: block; margin-bottom: 3px; font-size: 0.82rem; }
+  .req-link{
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+  }
+
+  /* ---------- CHECKLIST ---------- */
+  .checklist{
+    padding: 56px 24px 60px;
+    border-bottom: 1px solid var(--paper-line);
+  }
+  .checklist-head{ max-width: 900px; margin: 0 auto 24px; }
+  .checklist-head h2{ font-size: 1.5rem; font-weight: 600; margin-bottom: 8px; }
+  .checklist-head p{ color: var(--ink-soft); margin: 0; max-width: 60ch; }
+  .checklist-card{
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    padding: 8px 6px;
+  }
+  .check-item{
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--paper-line);
+    cursor: pointer;
+  }
+  .check-item:last-child{ border-bottom: none; }
+  .check-box{
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    border: 1.6px solid var(--ink-soft);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .check-item.done .check-box{ background: var(--gold); border-color: var(--gold); }
+  .check-box svg{ width: 14px; height: 14px; opacity: 0; transition: opacity 0.1s; stroke: var(--ink-dark); stroke-width: 3; }
+  .check-item.done .check-box svg{ opacity: 1; }
+  .check-label{
+    font-size: 0.95rem;
+    color: var(--ink);
+    transition: color 0.15s;
+  }
+  .check-item.done .check-label{ color: var(--ink-soft); text-decoration: line-through; }
+  .checklist-note{
+    max-width: 900px;
+    margin: 18px auto 0;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- QUOTE ---------- */
+  .quote{
+    background: var(--ink-dark);
+    color: #EFEEE3;
+    padding: 64px 24px;
+    text-align: left;
+  }
+  .quote-inner{ max-width: 640px; margin: 0 auto; }
+  .quote blockquote{
+    margin: 0;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.3rem, 3.4vw, 1.7rem);
+    line-height: 1.4;
+    color: #FBFAF3;
+  }
+  .quote-cite{
+    margin-top: 20px;
+    font-size: 0.88rem;
+    color: #B7C7C1;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    padding: 40px 24px 56px;
+  }
+  .footer-inner{
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .footer-inner p{
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    max-width: 46ch;
+  }
+  .footer-courses{
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  .footer-courses span{
+    display: inline-block;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 3px;
+    padding: 3px 9px;
+    margin: 2px 4px 2px 0;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">Requisitos do Curso</div>
+    <div class="nav-links">
+      <a href="#aac">AAC</a>
+      <a href="#estagio">Estágio</a>
+      <a href="#doc">Documentos</a>
+      <a href="#tcc">TCC</a>
+      <a href="#enade">ENADE</a>
+      <a href="#checklist">Checklist</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow fade-in">um guia do seu padrinho veterano</p>
+    <h1 class="fade-in d2">Passar nas provas é só <em>parte</em> do curso.</h1>
+    <p class="fade-in d3">Estética e Cosmética, Biomedicina e Farmácia têm mais alguns requisitos escondidos na matriz — AAC, estágio, documentação, TCC e ENADE. Nenhum deles é bicho de sete cabeças, mas todos custam caro se você só descobrir que existem no último semestre. Separei aqui o que cada um significa e como não deixar passar batido.</p>
+    <div class="hero-sign fade-in d3">
+      <div class="hero-avatar">Mr</div>
+      <span>Escrito por <strong>Marcos</strong>, seu padrinho veterano - Estacio</span>
+    </div>
+  </div>
+</header>
+
+<section class="intro">
+  <div class="intro-grid">
+    <div>
+      <h2>Por que isso não aparece na sua rotina de provas</h2>
+      <p>Esses requisitos não são disciplinas normais — por isso é fácil esquecer que eles existem. Mas eles entram na conta pra você colar o diploma no fim do curso, e as regras de cada um variam de curso pra curso e de matriz pra matriz.</p>
+      <p>A boa notícia: você não precisa resolver nada disso hoje. Só precisa saber que existe, e checar de vez em quando.</p>
+    </div>
+    <div class="intro-box">
+      <p><strong>Onde confirmar tudo:</strong> o SAVA e o App Estácio mostram exatamente o que já está concluído e o que ainda está pendente pra você, curso a curso. Sempre que tiver dúvida, é lá que mora a resposta oficial — este guia é só o resumo do seu padrinho.</p>
+    </div>
+  </div>
+</section>
+
+<section class="req" id="aac">
+  <div class="req-inner">
+    <div class="req-icon-col">
+      <div class="req-badge gold">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7M9 11h7"/></svg>
+      </div>
+      <span class="req-tag">Requisito 1</span>
+    </div>
+    <div class="req-content">
+      <h3>Atividades Complementares (AAC)</h3>
+      <p>Horas conquistadas fora da grade normal: eventos, palestras, cursos, projetos e afins. Dependendo do seu curso, até atividades feitas fora da Estácio podem contar, desde que tenham comprovante válido. Depois de participar, o certificado precisa ser enviado pra secretaria — ou lançado direto por um requerimento no SIA — pra virar hora registrada no sistema.</p>
+      <div class="req-tip">
+        <strong>Dica do padrinho</strong>
+        Não deixe certificado acumulando na gaveta. Lance a hora assim que sair do evento — leva dois minutos agora e evita um sufoco de véspera de formatura.
+      </div>
+      <a class="req-link" href="https://www.estacio.br/blog/aluno/atividades-complementares" target="_blank" rel="noopener">Fonte oficial sobre AAC →</a>
+    </div>
+  </div>
+</section>
+
+<section class="req alt" id="estagio">
+  <div class="req-inner">
+    <div class="req-icon-col">
+      <div class="req-badge wine">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>
+      </div>
+      <span class="req-tag">Requisito 2</span>
+    </div>
+    <div class="req-content">
+      <h3>Estágio obrigatório e não obrigatório</h3>
+      <p>Quando a sua matriz prevê estágio obrigatório, ele costuma aparecer como uma disciplina própria no SAVA ou no App Estácio, com as instruções de como e quando fazer — e nem todo curso exige isso, então vale conferir a sua matriz específica. Já o estágio não obrigatório pode ser feito a qualquer momento, geralmente é remunerado, e soma pontos no currículo mesmo sem ser cobrado.</p>
+      <div class="req-tip">
+        <strong>Dica do padrinho</strong>
+        Quando a disciplina de estágio abrir pra você, comece cedo. Sobra tempo pra resolver imprevisto sem correr contra o relógio no fim do curso.
+      </div>
+      <a class="req-link" href="https://www.estacio.br/blog/aluno/estagio-obrigatorio" target="_blank" rel="noopener">Fonte oficial sobre estágio →</a>
+    </div>
+  </div>
+</section>
+
+<section class="req" id="doc">
+  <div class="req-inner">
+    <div class="req-icon-col">
+      <div class="req-badge gold">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
+      </div>
+      <span class="req-tag">Requisito 3</span>
+    </div>
+    <div class="req-content">
+      <h3>Documentos obrigatórios</h3>
+      <p>É o item mais simples da lista, e por isso mesmo o mais fácil de esquecer. São os documentos que a Estácio pede ao longo do curso, alguns com prazo definido. Quanto antes você regulariza, menos chance de virar pendência na hora de formar.</p>
+      <div class="req-tip">
+        <strong>Dica do padrinho</strong>
+        Reserve um dia por semestre só pra isso: abre o SAVA ou o App, olha se falta algum documento, resolve e esquece o assunto de novo.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="req alt" id="tcc">
+  <div class="req-inner">
+    <div class="req-icon-col">
+      <div class="req-badge wine">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <span class="req-tag">Requisito 4</span>
+    </div>
+    <div class="req-content">
+      <h3>Trabalho de Conclusão de Curso (TCC)</h3>
+      <p>O TCC geralmente acontece perto do final do curso, mas nem toda matriz da Estácio exige — depende do seu curso específico. Quando ele existir pra você, as orientações de formato, prazo e orientador chegam no momento certo, sem precisar correr atrás sozinho.</p>
+      <div class="req-tip">
+        <strong>Dica do padrinho</strong>
+        Se o seu curso tem TCC, comece a pensar num tema com antecedência, mesmo que só informalmente. Um tema que te interessa de verdade torna o processo bem menos arrastado lá na frente.
+      </div>
+      <a class="req-link" href="https://www.estacio.br/blog/aluno/tcc-e-obrigatorio" target="_blank" rel="noopener">Fonte oficial sobre TCC →</a>
+    </div>
+  </div>
+</section>
+
+<section class="req" id="enade">
+  <div class="req-inner">
+    <div class="req-icon-col">
+      <div class="req-badge gold">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 3v3h6V3"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+      </div>
+      <span class="req-tag">Requisito 5</span>
+    </div>
+    <div class="req-content">
+      <h3>ENADE</h3>
+      <p>É a avaliação nacional do ensino superior: mede o desempenho de estudantes e de cursos de graduação. A convocação obrigatória depende do seu curso e da sua situação acadêmica em cada edição — não é uma prova comum da faculdade, mas quem é convocado precisa ficar em dia com as etapas exigidas.</p>
+      <div class="req-tip">
+        <strong>Dica do padrinho</strong>
+        Se a convocação cair pra você, leve a sério — pendência com o ENADE pode travar a conclusão do curso. Fora isso, não tem motivo pra se preocupar antes da hora: a Estácio avisa com antecedência.
+      </div>
+      <a class="req-link" href="https://www.estacio.br/blog/aluno/enade-e-obrigatorio-entenda-como-funciona-a-prova" target="_blank" rel="noopener">Fonte oficial sobre ENADE →</a>
+    </div>
+  </div>
+</section>
+
+<section class="checklist" id="checklist">
+  <div class="checklist-head">
+    <h2>Seu progresso, do seu jeito</h2>
+    <p>Marque o que você já resolveu ou já sabe sobre o seu curso. Isso fica salvo só no seu navegador — é um lembrete pessoal, não substitui o SAVA.</p>
+  </div>
+  <div class="checklist-card" id="checklistCard">
+    <div class="check-item" data-key="aac">
+      <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+      <div class="check-label">Já registrei minhas horas de AAC mais recentes</div>
+    </div>
+    <div class="check-item" data-key="estagio">
+      <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+      <div class="check-label">Sei se o meu curso tem estágio obrigatório</div>
+    </div>
+    <div class="check-item" data-key="doc">
+      <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+      <div class="check-label">Meus documentos estão em dia no SAVA/App</div>
+    </div>
+    <div class="check-item" data-key="tcc">
+      <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+      <div class="check-label">Sei se o meu curso exige TCC</div>
+    </div>
+    <div class="check-item" data-key="enade">
+      <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+      <div class="check-label">Já vi no SAVA se fui convocado(a) para o ENADE</div>
+    </div>
+  </div>
+  <p class="checklist-note">A fonte oficial é sempre o SAVA ou o App Estácio — este checklist é só pra você organizar a cabeça.</p>
+</section>
+
+<section class="quote">
+  <div class="quote-inner">
+    <blockquote>"Você não precisa resolver tudo de uma vez. O importante é acompanhar aos poucos — separa uns minutinhos de vez em quando, olha o SAVA, confere as pendências, organiza os certificados. Assim, quando o fim do curso chegar, nada te pega de surpresa."</blockquote>
+    <p class="quote-cite">— a dica que todo veterano queria ter ouvido antes</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <p>Guia informal feito por um veterano pra ajudar quem está começando. As regras variam por curso e matriz — sempre confirme os detalhes no SAVA, no App Estácio ou com a secretaria.</p>
+    <div class="footer-courses">
+      <span>Estética e Cosmética</span>
+      <span>Biomedicina</span>
+      <span>Farmácia</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var STORAGE_KEY = 'requisitos-curso-checklist';
+    var items = document.querySelectorAll('.check-item');
+    var saved = {};
+    try{ saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }catch(e){ saved = {}; }
+
+    items.forEach(function(item){
+      var key = item.getAttribute('data-key');
+      if(saved[key]) item.classList.add('done');
+      item.addEventListener('click', function(){
+        item.classList.toggle('done');
+        saved[key] = item.classList.contains('done');
+        try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); }catch(e){}
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
